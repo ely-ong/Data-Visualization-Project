@@ -23,7 +23,7 @@ app = Dash(__name__,
 
 app.layout = html.Div(children=[
     dbc.Container([
-        dbc.Row(html.H1(children="Risk Information per Region")), #static, but we could change via call back to "Risk Information in {Region}, put id if ever"
+        dbc.Row(html.H1(children="Risk Information per Province")), #static, but we could change via call back to "Risk Information in {Region}, put id if ever"
         
         dbc.Row(children=[
             dbc.Col(children=[
@@ -83,7 +83,7 @@ app.layout = html.Div(children=[
         html.Br(),
 
         dbc.Row(
-            html.H1(children="Risk Information per Province")), #static, but we could change via call back to "Risk Information in {Region}, put id if ever"
+            html.H1(children="Risk Information per Region")), #static, but we could change via call back to "Risk Information in {Region}, put id if ever"
 
 
         dbc.Row(children=[
