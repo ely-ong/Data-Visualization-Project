@@ -97,13 +97,13 @@ app.layout = html.Div(children=[
                         dbc.Col(children=dbc.Placeholder(style={"height":350,
                                                                 "width":"100%"})),
                         dbc.Col(children=[
-                                html.H5(id="elem-title"),
+                                html.H6(id="elem-title"),
                                 dcc.Graph(
                                         id="elem-pie",
                                         style={"height":350,
                                         "width":"100%"})]),
                         dbc.Col(children=[
-                                html.H5(id="secondary-title"),
+                                html.H6(id="secondary-title"),
                                 dcc.Graph(
                                         id="secondary-pie",
                                         style={"height":350,
@@ -212,19 +212,33 @@ update_province_options("province-select1", "region-select")
 # set province options for second dropdown
 update_province_options("province-select2", "region-select")
 
+# set up placeholder for unavailable data
+fig_none = go.Figure()
+fig_none.add_trace(go.Scatter(
+            x=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
+            y=[0, 4, 5, 1, 2, 3, 2, 4, 2, 1],
+            mode="text",
+            text=["","","","","", "Data unavailable", "","",""],
+            textfont_size=24,
+            ))
+
+fig_none.update_layout(
+                        xaxis = {'visible': False},
+                        yaxis = {'visible': False})
+
 @callback(
     Output("elem-title", "children"),
     Input("province-select1", "value")
 )
 def set_elem_title(selected_province):
-    return 'Percentage of Elementary Students in '+selected_province.title()+' by Sex'
+    return 'Percentage of Elementary Students in '+selected_province+' by Sex'
 
 @callback(
     Output("secondary-title", "children"),
     Input("province-select1", "value")
 )
 def set_secondary_title(selected_province):
-    return 'Percentage of Secondary Students in '+selected_province.title()+' by Sex'
+    return 'Percentage of Secondary Students in '+selected_province+' by Sex'
 
 @callback(
     Output("elem-pie", "figure"),
@@ -288,21 +302,21 @@ def update_students_pie_graphs(selected_region, selected_province):
     Input("province-select1", "value")
 )
 def set_heatmap_title(selected_province):
-    return "Percentage of Shelters by Wall and Roof Categories in "+selected_province.title()
+    return "Percentage of Shelters by Wall and Roof Categories in "+selected_province
 
 @callback(
     Output("water-title", "children"),
     Input("province-select1", "value")
 )
 def set_water_title(selected_province):
-    return "Percentage of Water Sources by Category in "+selected_province.title()
+    return "Percentage of Water Sources by Category in "+selected_province
 
 @callback(
     Output("toilet-title", "children"),
     Input("province-select1", "value")
 )
 def set_toilet_title(selected_province):
-    return "Percentage of Toilet Facility Types in "+selected_province.title()
+    return "Percentage of Toilet Facility Types in "+selected_province
 
 
 @callback(
@@ -314,6 +328,13 @@ def update_heatmap(selected_region, selected_province):
 
     # selecting dataframe row from selected region and province
     shelter_counts = df_roof_wall_indexed.loc[selected_region, selected_province]
+
+    # if data row is full of 0, set figure to none
+    if (shelter_counts == 0).all():
+
+        fig_shelter = fig_none
+        
+        return fig_shelter
 
     # converting dataframe row of counts to array of shelter type percentages to fill up new dataframe
     shelter_counts = shelter_counts.values.flatten()
@@ -353,38 +374,44 @@ def update_heatmap(selected_region, selected_province):
 )
 def update_water_toilet_pie_graphs(selected_region, selected_province):
 
-    water_source_categories = df_water_sources_indexed.columns
+    water_source_categories = df_water_sources_indexed.columns    
 
     #selecting dataframe row from selected region and province
     water_source_categories_counts = df_water_sources_indexed.loc[selected_region, selected_province]
 
-    # converting dataframe row of counts to array of water source categories to assign to plotly go.figure values
-    water_source_categories_counts = water_source_categories_counts.values.flatten()
+    # if data row is full of 0, set figure to none
+    if (water_source_categories_counts == 0).all():
+        fig_water = fig_none
+        
+    else:
 
-    # creating color map
-    water_color_map = {'Faucet/Community System':'#72e5ef', 
-                        'Tubed/Piped':'#214d4e', 
-                        'Dug well':'#239eb3', 
-                        'Bottled Water':'#bfd6fa', 
-                        'Natural Sources':'#0f5eb0', 
-                        'Peddler/Others/Not reported':'#aeabab'}
+        # converting dataframe row of counts to array of water source categories to assign to plotly go.figure values
+        water_source_categories_counts = water_source_categories_counts.values.flatten()
 
-    # converting color map to pd.Series to assign to go.figure colors value
-    water_color_map = pd.Series(water_color_map)
+        # creating color map
+        water_color_map = {'Faucet/Community System':'#72e5ef', 
+                            'Tubed/Piped':'#214d4e', 
+                            'Dug well':'#239eb3', 
+                            'Bottled Water':'#bfd6fa', 
+                            'Natural Sources':'#0f5eb0', 
+                            'Peddler/Others/Not reported':'#aeabab'}
 
-    fig_water = go.Figure(data=[go.Pie(labels=water_source_categories,
-                             values=water_source_categories_counts)])
+        # converting color map to pd.Series to assign to go.figure colors value
+        water_color_map = pd.Series(water_color_map)
 
-    # setting colors
-    fig_water.update_layout(
-                            autosize=True,
-                            legend=dict(
-                            orientation="h",
-                            font=dict(size=8)),
-                            margin={'l':0, 't':3, 'r':0})
-    fig_water.update_traces(
-                            hoverinfo='label+value', 
-                            marker=dict(colors=water_color_map))
+        fig_water = go.Figure(data=[go.Pie(labels=water_source_categories,
+                                values=water_source_categories_counts)])
+
+        # setting colors
+        fig_water.update_layout(
+                                autosize=True,
+                                legend=dict(
+                                orientation="h",
+                                font=dict(size=8)),
+                                margin={'l':0, 't':3, 'r':0})
+        fig_water.update_traces(
+                                hoverinfo='label+value', 
+                                marker=dict(colors=water_color_map))
     
 
     # creating array of toilet types to assign to plotly go.figure labels
@@ -393,29 +420,34 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
     # selecting dataframe row from selected region and province
     toilet_type_counts = df_toilet_sources_indexed.loc[selected_region, selected_province]
 
-    # converting dataframe row of counts to array of toilet type counts to assign to plotly go.figure values
-    toilet_type_counts = toilet_type_counts.values.flatten()
+    # if data row is full of 0, set figure to none
+    if (toilet_type_counts == 0).all():
+        fig_toilet = fig_none
 
-    # creating color map
-    toilet_color_map = {'Water Sealed':'#72e5ef', 
-                        'Closed Pit':'#115d52', 
-                        'Open Pit':'#0ba47e', 
-                        'None':'#aeabab'}
+    else:
+        # converting dataframe row of counts to array of toilet type counts to assign to plotly go.figure values
+        toilet_type_counts = toilet_type_counts.values.flatten()
 
-    # converting color map to pd.Series to assign to go.figure colors value
-    toilet_color_map = pd.Series(toilet_color_map)
+        # creating color map
+        toilet_color_map = {'Water Sealed':'#72e5ef', 
+                            'Closed Pit':'#115d52', 
+                            'Open Pit':'#0ba47e', 
+                            'None':'#aeabab'}
 
-    fig_toilet = go.Figure(data=[go.Pie(labels=toilet_types,
-                                values=toilet_type_counts)])
+        # converting color map to pd.Series to assign to go.figure colors value
+        toilet_color_map = pd.Series(toilet_color_map)
 
-    # setting colors
-    fig_toilet.update_layout(
-                            autosize=True,
-                            legend=dict(
-                                orientation="h",
-                                font=dict(size=8)),
-                            margin={'l':0, 't':3, 'r':0})
-    fig_toilet.update_traces(hoverinfo='label+value', marker=dict(colors=toilet_color_map))
+        fig_toilet = go.Figure(data=[go.Pie(labels=toilet_types,
+                                    values=toilet_type_counts)])
+
+        # setting colors
+        fig_toilet.update_layout(
+                                autosize=True,
+                                legend=dict(
+                                    orientation="h",
+                                    font=dict(size=8)),
+                                margin={'l':0, 't':3, 'r':0})
+        fig_toilet.update_traces(hoverinfo='label+value', marker=dict(colors=toilet_color_map))
 
     return fig_water, fig_toilet
 
