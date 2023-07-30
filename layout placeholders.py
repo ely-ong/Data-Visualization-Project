@@ -26,6 +26,8 @@ df_elem_indexed = df_elem.set_index(['Region', 'Province'])
 df_secondary = pd.read_excel('data101_data/secondary_students_cleaned.xlsx', index_col=0)
 df_secondary_indexed = df_secondary.set_index(['Region', 'Province'])
 
+df_pop_by_gender_age = pd.read_csv('data101_data/bidirectional_df.csv')
+
 # Mapbox token
 px.set_mapbox_access_token(open(".mapbox_token").read())
 
@@ -56,9 +58,9 @@ app.layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Row(children=[
                     dbc.Stack(children=[
-                        dbc.Placeholder(style={"height":50,
+                        dbc.Placeholder(style={"height":50, #filters for choropleth
                                         "width":"100%"}),
-                        dbc.Placeholder(style={"height":725,
+                        dbc.Placeholder(style={"height":725, #choropleth map
                                         "width":"100%"})]
                                         ,gap=4)
                     ])
@@ -67,7 +69,7 @@ app.layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Stack(children=[
                     dbc.Row(children=[
-                        dbc.Col(children=[
+                        dbc.Col(children=[ #region dropdown
                                 html.H6(children="Select Region"),
                                 dcc.Dropdown(
                                             region_options,
@@ -76,7 +78,7 @@ app.layout = html.Div(children=[
                                             clearable=False,
                                             style={"height":20,
                                                     "width":"100%"})]),
-                        dbc.Col(children=[
+                        dbc.Col(children=[ #province dropdown
                                 html.H6(children="Select Province/District"),
                                 dcc.Dropdown(
                                             id="province-select1",
@@ -85,25 +87,25 @@ app.layout = html.Div(children=[
                                                      "width":"100%"})]),
                     ]),
                     
-                    dbc.Row(children=[
-                        dbc.Col(children=dbc.Placeholder(style={"height":350,
+                    dbc.Row(children=[ 
+                        dbc.Col(children=dbc.Placeholder(style={"height":350, #bidirectional population and age
                                                                 "width":"100%"})),
-                        dbc.Col(children=dbc.Placeholder(style={"height":350,
+                        dbc.Col(children=dbc.Placeholder(style={"height":350, #vulnerable groups single values
                                                                 "width":"100%"}))
                     ]),
                     dbc.Row(children=[
-                        dbc.Col(children=dbc.Placeholder(style={"height":350,
+                        dbc.Col(children=dbc.Placeholder(style={"height":350, # num of evac centers single value
                                                                 "width":"100%"})),
-                        dbc.Col(children=dbc.Placeholder(style={"height":350,
+                        dbc.Col(children=dbc.Placeholder(style={"height":350, # num of schools single value
                                                                 "width":"100%"})),
-                        dbc.Col(children=[
-                                html.H6(id="elem-title"),
+                        dbc.Col(children=[ # elem pie
+                                html.H5(id="elem-title"),
                                 dcc.Graph(
                                         id="elem-pie",
                                         style={"height":350,
                                         "width":"100%"})]),
-                        dbc.Col(children=[
-                                html.H6(id="secondary-title"),
+                        dbc.Col(children=[ # secondary students pie
+                                html.H5(id="secondary-title"),
                                 dcc.Graph(
                                         id="secondary-pie",
                                         style={"height":350,
@@ -115,31 +117,31 @@ app.layout = html.Div(children=[
 
         html.Br(),
 
-        dbc.Row(children=[
-            dbc.Col(dbc.Placeholder(style={"height":300,
+        dbc.Row(children=[ 
+            dbc.Col(dbc.Placeholder(style={"height":300, # health facility single values
                                            "width":"100%"}),
                                            width=5),
-            dbc.Col(dbc.Placeholder(style={"height":300,
+            dbc.Col(dbc.Placeholder(style={"height":300, # health personnel single values
                                            "width":"100%"}))
         ]),
 
         html.Br(),
 
         dbc.Row(children=[
-            dbc.Col(children=[
+            dbc.Col(children=[ #wall-roof heatmap
                     html.H5(id="heatmap-title"),
                     dcc.Graph(
                         id="heatmap",
                         style={"height":500,
                                            "width":"100%"})],
                                            width=5),
-            dbc.Col(children=[
+            dbc.Col(children=[ #water sources availability pie
                     html.H5(id="water-title"),
                     dcc.Graph(
                         id="water-pie",
                         style={"height":500,
                                 "width":"100%"})]),
-            dbc.Col(children=[
+            dbc.Col(children=[ #toilet facility availability pie
                     html.H5(id="toilet-title"),
                     dcc.Graph(
                         id="toilet-pie",
@@ -157,7 +159,7 @@ app.layout = html.Div(children=[
 
         dbc.Row(children=[
             dbc.Col(children=[
-                html.H6(children="Select Province/District to Highlight"),
+                html.H6(children="Select Province/District to Highlight"), #province/district dropwdown
                 dcc.Dropdown(
                             id="province-select2",
                             clearable=False,
@@ -172,14 +174,14 @@ app.layout = html.Div(children=[
         dbc.Row(children=[
             dbc.Col(children=[
                 dbc.Stack(children=[
-                    dbc.Placeholder(style={"height":185,
+                    dbc.Placeholder(style={"height":185, #pop per province bar
                                            "width":"100%"}),
-                    dbc.Placeholder(style={"height":185,
+                    dbc.Placeholder(style={"height":185, #response facilities per province bar
                                            "width":"100%"})]
                 ,gap=4)]
             ,width=5),
             
-            dbc.Col(dbc.Placeholder(style={"height":400,
+            dbc.Col(dbc.Placeholder(style={"height":400, #health personnel to population scatter
                                            "width":"100%"}))
             
         ]),
