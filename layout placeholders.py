@@ -99,13 +99,13 @@ app.layout = html.Div(children=[
                         dbc.Col(children=dbc.Placeholder(style={"height":350, # num of schools single value
                                                                 "width":"100%"})),
                         dbc.Col(children=[ # elem pie
-                                html.H5(id="elem-title"),
+                                html.H6(id="elem-title"),
                                 dcc.Graph(
                                         id="elem-pie",
                                         style={"height":350,
                                         "width":"100%"})]),
                         dbc.Col(children=[ # secondary students pie
-                                html.H5(id="secondary-title"),
+                                html.H6(id="secondary-title"),
                                 dcc.Graph(
                                         id="secondary-pie",
                                         style={"height":350,
