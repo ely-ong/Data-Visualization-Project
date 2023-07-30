@@ -257,6 +257,10 @@ def update_students_pie_graphs(selected_region, selected_province):
     # selecting dataframe row from selected region and province
     elem_students_counts = df_elem_indexed.loc[selected_region, selected_province]
 
+    # if data row is full of 0, set figure to none
+    if (elem_students_counts == 0).all():
+        fig_elem = fig_none
+
     # converting dataframe row of counts to array of toilet type counts to assign to plotly go.figure values
     elem_students_counts = elem_students_counts.values.flatten()
 
@@ -280,6 +284,10 @@ def update_students_pie_graphs(selected_region, selected_province):
 
     # selecting dataframe row from selected region and province
     secondary_students_counts = df_secondary_indexed.loc[selected_region, selected_province]
+
+     # if data row is full of 0, set figure to none
+    if (secondary_students_counts == 0).all():
+        fig_secondary = fig_none
 
     # converting dataframe row of counts to array of toilet type counts to assign to plotly go.figure values
     secondary_students_counts = secondary_students_counts.values.flatten()
