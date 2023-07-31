@@ -198,6 +198,7 @@ app.layout = html.Div(children=[
                 html.H6(children="Select Province/District to Highlight"),
                 dcc.Dropdown(
                     id="province-select2",
+                    value = "province-select1",
                     clearable=False,
                     style={"height": 30,
                            "width": "100%"})],
@@ -227,7 +228,6 @@ app.layout = html.Div(children=[
 ])
 
 # function to reuse for updating the options of a single province dropdown
-
 
 def update_province_options(output_id, input_id):
 
