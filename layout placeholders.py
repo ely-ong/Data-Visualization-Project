@@ -46,6 +46,10 @@ flood_gdf_indexed = flood_gdf.set_index('adm2_name')
 landslide_gdf = gpd.read_file('data101_data/final_landslide.geojson', driver='GeoJSON')
 landslide_gdf_indexed = landslide_gdf.set_index('adm2_name')
 
+pop = pd.read_excel('data101_data/pop_per_reg.xlsx')
+
+response = pd.read_excel('data101_data/response_per_reg.xlsx')
+
 # Mapbox token
 px.set_mapbox_access_token(open(".mapbox_token").read())
 
@@ -211,10 +215,21 @@ app.layout = html.Div(children=[
         dbc.Row(children=[
             dbc.Col(children=[
                 dbc.Stack(children=[
-                    dbc.Placeholder(style={"height": 185,  # pop per province bar
-                                           "width": "100%"}),
-                    dbc.Placeholder(style={"height": 185,  # response facilities per province bar
-                                           "width": "100%"})], gap=4)], width=5),
+                    dbc.Col(children=[ # pop per province bar
+                        html.H5(id = "pop-per-prov-title"),
+                        dcc.Graph(
+                            id="pop-per-prov",
+                            style={"height": 185,
+                                   "width": "100%"})]),
+                    dbc.Col(children=[ # response facilities per province bar
+                        html.H5(id = "response-per-prov-title"),
+                        dcc.Graph(
+                            id="response-per-prov",
+                            style={"height": 185,
+                                   "width": "100%"})
+                                   ])
+                ])
+            ], width=5),
 
             dbc.Col(dbc.Placeholder(style={"height": 400,  # health personnel to population scatter
                                            "width": "100%"}))
@@ -357,6 +372,19 @@ def set_elem_title(selected_province):
 def set_secondary_title(selected_province):
     return 'Percentage of Secondary Students in '+selected_province+' by Sex'
 
+@callback(
+    Output("pop-per-prov-title", "children"),
+    Input("region-select", "value")
+)
+def set_pop_per_prov_title(selected_region):
+    return 'Population per Province in '+selected_region
+
+@callback(
+    Output("response-per-prov-title", "children"),
+    Input("region-select", "value")
+)
+def set_pop_per_prov_title(selected_region):
+    return 'Response Facility per Province in '+selected_region
 
 @callback(
     Output("elem-pie", "figure"),
@@ -681,6 +709,57 @@ def display_map(selected_type):
         map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
     return map_fig
+
+@callback(
+    Output('pop-per-prov', 'figure'),
+    Input('region-select', 'value'),
+    Input('province-select2', 'value'),
+)
+
+def pop_per_prov(selected_region, selected_province):
+    region_name = selected_region
+
+    # Filter the DataFrame by the given region
+    region_data = pop[pop['Region'] == region_name].copy().reset_index()
+
+    # Add a 'province_id' column to the filtered DataFrame
+    region_data['province_id'] = [str(i) for i in region_data.index]
+
+    color_discrete_sequence = ['lightslategray',]*len(region_data)
+    index =  region_data.loc[region_data['Province'] == selected_province].index[0]
+    color_discrete_sequence[index] = ['crimson'] #index
+
+    fig_pop=px.bar(region_data,x='Province',y='Total Population',
+            color = 'province_id',
+            color_discrete_sequence=color_discrete_sequence,
+            )
+    
+    return fig_pop
+
+@callback(
+    Output('response-per-prov', 'figure'),
+    Input('region-select', 'value'),
+    Input('province-select2', 'value'),
+)
+
+def response_per_prov(selected_region, selected_province):
+    region_name = selected_region
+
+    # Filter the DataFrame by the given region
+    region_data = response[response['Region'] == region_name].copy().reset_index()
+
+    # Add a 'province_id' column to the filtered DataFrame
+    region_data['province_id'] = [str(i) for i in region_data.index]
+
+    pattern_shape_sequence = ['',]*len(region_data)
+    index =  region_data.loc[region_data['Province'] == selected_province].index[0]
+    pattern_shape_sequence[index] = ['x','x','x'] #index
+
+    fig_resp = px.bar(region_data, x="Province", y=["Total Evacuation Centers", "Total Health Facilities", "Total Elementary and Secondary Schools"],
+                    # title="Total Response Facilities", 
+                    pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence)
+    
+    return fig_resp
 
 # Run the app
 if __name__ == '__main__':
