@@ -272,7 +272,7 @@ fig_none.update_layout(
     Input("province-select1", "value")
 )
 def set_pop_bidirectional_title(selected_province):
-    return f'Population of {selected_province.title()} by Age Group and Sex'
+    return f'Population of {selected_province} by Age Group and Sex'
 
 @callback(
         Output("pop-bidirectional", "figure"),
@@ -296,34 +296,45 @@ def update_pop_bidirectional(selected_province):
 
     df=grpby_ph
 
+    fig_bidirectional_pop = go.Figure()
+
     # Create the bidirectional graph
-    fig_bidirectional_pop = px.bar(
-        df,
-        x=-df['Male'].values, 
-        y='Age_Group',
-        #text='Male', 
-        orientation='h',
-        color_discrete_sequence=['#01365c']
-    )
+    fig_bidirectional_pop.add_trace(go.Bar(
+            x=-df['Male'].values, 
+            y=df['Age_Group'],
+            name='Male',
+            text=df['Male'].values,
+            hoverinfo='name+text', 
+            orientation='h',
+            marker_color='#01365c'
+        )
+    ) 
 
-    fig_bidirectional_pop.add_trace(px.bar(
-        df, 
-        x='Female',
-        y='Age_Group',
-        #text='Female',
+    fig_bidirectional_pop.add_trace(go.Bar( 
+        x=df['Female'].values,
+        y=df['Age_Group'],
+        name='Female',
+        text=df['Male'].values,
+        hoverinfo='name+text',
         orientation='h',
-        color_discrete_sequence=['#ffb5b5']).data[0]
+        marker_color='#ffb5b5')
+        # .data[0]
     )
-
 
     # Set layout for the graph
     fig_bidirectional_pop.update_layout(
         margin=dict(l=5, r=5, t=5, b=5),
-        xaxis_title="Population",
+        xaxis=dict(
+            title="Population",
+            tickvals=[-20000, 0, 20000],
+            ticktext=['20k', '0', '20k']
+        ),
         yaxis_title="Age Group",
         yaxis_autorange='reversed',
-        showlegend=False,
-        bargap=0.05
+        showlegend=True,
+        barmode='relative',
+        bargap=0.05,
+        bargroupgap=0
     )
 
     return fig_bidirectional_pop
