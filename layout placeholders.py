@@ -231,27 +231,26 @@ app.layout = html.Div(children=[
 @callback(
     Output("province-select1", "options"),
     Output("province-select1", "value"),
+    Output("province-select2", "options"),
     Input("region-select", "value")
 )
-def update_province_select1(selected_region):
+def update_province_options(selected_region):
     df_provinces = df_region_indexed.loc[selected_region]
 
     province_options = [{'label': i, 'value': i}
                             for i in df_provinces.Province.unique()]
     value = province_options[0]['value']
 
-    return province_options, value
+    return province_options, value, province_options
 
-# set province options and value for second dropdown
+# set province value for second dropdown
 @callback(
-    Output("province-select2", "options"),
     Output("province-select2", "value"),
-    Input("province-select1", "options"),
     Input("province-select1", "value")
 )
-def update_province_select2(options, selected_province):
+def update_province_select2(selected_province):
 
-    return options, selected_province
+    return selected_province
 
 # set up placeholder for unavailable data
 fig_none = go.Figure()
@@ -315,7 +314,7 @@ def update_pop_bidirectional(selected_province):
         x=df['Female'].values,
         y=df['Age_Group'],
         name='Female',
-        text=df['Male'].values,
+        text=df['Female'].values,
         hoverinfo='name+text',
         orientation='h',
         marker_color='#ffb5b5')
