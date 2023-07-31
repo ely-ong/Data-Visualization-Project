@@ -34,6 +34,18 @@ df_secondary_indexed = df_secondary.set_index(['Region', 'Province'])
 
 df_pop_by_gender_age = pd.read_csv('data101_data/bidirectional_df.csv')
 
+average_gdf = gpd.read_file('data101_data/final_aggregate.geojson', driver='GeoJSON')
+average_gdf_indexed = average_gdf.set_index('adm2_name')
+
+cyclone_gdf = gpd.read_file('data101_data/final_cyclone.geojson', driver='GeoJSON')
+cyclone_gdf_indexed = cyclone_gdf.set_index('adm2_name')
+
+flood_gdf = gpd.read_file('data101_data/final_flood.geojson', driver='GeoJSON')
+flood_gdf_indexed = flood_gdf.set_index('adm2_name')
+
+landslide_gdf = gpd.read_file('data101_data/final_landslide.geojson', driver='GeoJSON')
+landslide_gdf_indexed = landslide_gdf.set_index('adm2_name')
+
 # Mapbox token
 px.set_mapbox_access_token(open(".mapbox_token").read())
 
@@ -51,6 +63,7 @@ for i in regions:
         'value': i
     })
 
+
 app.layout = html.Div(children=[
     dbc.Container([
         html.Br(),
@@ -63,10 +76,20 @@ app.layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Row(children=[
                     dbc.Stack(children=[
-                        dbc.Placeholder(style={"height": 50,  # filters for choropleth
-                                        "width": "100%"}),
-                        dbc.Placeholder(style={"height": 725,  # choropleth map
-                                        "width": "100%"})], gap=4)
+                        dbc.Col(children=[ #radio buttons, filters for choropleth 
+                            html.H6(children="Select Risk Class Type"),
+                            dbc.RadioItems(options = ['average', 'typhoon','flood', 'landslide'],  
+                                           value='average',
+                                           id='choropleth-select',
+                                           inline=True,
+                                           className='mb-2',
+                                           style={"height": 50,  
+                                                  "width": "100%"})]),
+                        dcc.Loading(id="map-loading",
+                                    type="circle",
+                                    children=dcc.Graph(id="ph-map"),
+                                    # style={"height": 725, "width": "100%"} # choropleth map
+                                        )], gap=4)
                 ])
             ], width=5),
 
@@ -549,6 +572,84 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
 
     return fig_water, fig_toilet
 
+@callback(
+    Output('ph-map', 'figure'),
+    Input('choropleth-select', 'value'),
+)
+def display_map(selected_type):
+    if 'average' == selected_type:
+        geodf = average_gdf_indexed
+
+        map_fig = px.choropleth_mapbox(geodf,
+                           geojson = geodf.geometry,
+                           locations = geodf.index,
+                           color='AvgRisk_Class',
+                           color_continuous_scale= px.colors.sequential.OrRd,
+                           range_color=(0, 4),
+                           mapbox_style="carto-positron",
+                           title = "Average Risk Class per Province",
+                           hover_name = geodf.index,
+                           hover_data= ['AvgRisk_Class', 'AvgRisk_Text'],
+                           center={'lat': 12.099568, 'lon': 122.733168},
+                           height=750,
+                           zoom=4.5)
+        map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+        
+    elif 'typhoon' == selected_type:
+        geodf = cyclone_gdf_indexed
+
+        map_fig = px.choropleth_mapbox(geodf,
+                           geojson = geodf.geometry,
+                           locations = geodf.index,
+                           color='Cy_Class',
+                           color_continuous_scale= px.colors.sequential.Burg,
+                           range_color=(0, 4),
+                           mapbox_style="carto-positron",
+                           title = "Typhoon Risk Class (above Caterogy 3) per Province",
+                           hover_name = geodf.index,
+                           hover_data= ['Cy_Freq', 'Cy_Class', 'Cy_Text'],
+                           center={'lat': 12.099568, 'lon': 122.733168},
+                           height=750,
+                           zoom=4.5)
+        map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    
+    elif 'flood' == selected_type:
+        geodf = flood_gdf_indexed
+
+        map_fig = px.choropleth_mapbox(geodf,
+                           geojson = geodf.geometry,
+                           locations = geodf.index,
+                           color='FloodClass',
+                           color_continuous_scale= px.colors.sequential.Teal,
+                           range_color=(0, 4),
+                           mapbox_style="carto-positron",
+                           title = "Flood Risk Class per Province",
+                           hover_name = geodf.index,
+                           hover_data= ['AvgFLRisk', 'FloodClass', 'FloodText'],
+                           center={'lat': 12.099568, 'lon': 122.733168},
+                           height=750,
+                           zoom=4.5)
+        map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+    else:
+        geodf = landslide_gdf_indexed
+
+        map_fig = px.choropleth_mapbox(geodf,
+                           geojson = geodf.geometry,
+                           locations = geodf.index,
+                           color='LS_Class',
+                           color_continuous_scale= px.colors.sequential.Brwnyl,
+                           range_color=(0, 4),
+                           mapbox_style="carto-positron",
+                           title = "Landslide Risk Class per Province",
+                           hover_name = geodf.index,
+                           hover_data= ['LS_Risk', 'LS_Class', 'LS_Text'],
+                           center={'lat': 12.099568, 'lon': 122.733168},
+                           height=750,
+                           zoom=4.5)
+        map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+    return map_fig
 
 # Run the app
 if __name__ == '__main__':
