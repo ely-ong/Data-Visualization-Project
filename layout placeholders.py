@@ -595,7 +595,7 @@ def choropleth_title(selected_type):
         return "Average Risk Class per Province"
     
     elif 'typhoon' == selected_type:
-        return "Typhoon Risk Class (above Caterogy 3) per Province"
+        return "Typhoon Risk Class (above Category 3) per Province"
     
     elif 'flood' == selected_type:
         return "Flood Risk Class per Province"
@@ -636,7 +636,7 @@ def display_map(selected_type):
                            color_continuous_scale= px.colors.sequential.Burg,
                            range_color=(0, 4),
                            mapbox_style="carto-positron",
-                           title = "Typhoon Risk Class (above Caterogy 3) per Province",
+                           title = "Typhoon Risk Class (above Category 3) per Province",
                            hover_name = geodf.index,
                            hover_data= ['Cy_Freq', 'Cy_Class', 'Cy_Text'],
                            center={'lat': 12.099568, 'lon': 122.733168},
