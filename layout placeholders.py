@@ -216,16 +216,16 @@ app.layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Stack(children=[
                     dbc.Col(children=[ # pop per province bar
-                        html.H5(id = "pop-per-prov-title"),
+                        html.H6(id = "pop-per-prov-title"),
                         dcc.Graph(
                             id="pop-per-prov",
-                            style={"height": 185,
+                            style={"height": 300,
                                    "width": "100%"})]),
                     dbc.Col(children=[ # response facilities per province bar
-                        html.H5(id = "response-per-prov-title"),
+                        html.H6(id = "response-per-prov-title"),
                         dcc.Graph(
                             id="response-per-prov",
-                            style={"height": 185,
+                            style={"height": 300,
                                    "width": "100%"})
                                    ])
                 ])
@@ -384,7 +384,7 @@ def set_pop_per_prov_title(selected_region):
     Input("region-select", "value")
 )
 def set_pop_per_prov_title(selected_region):
-    return 'Response Facility per Province in '+selected_region
+    return 'Total Response Facilities per Province in '+selected_region
 
 @callback(
     Output("elem-pie", "figure"),
@@ -755,7 +755,7 @@ def response_per_prov(selected_region, selected_province):
     index =  region_data.loc[region_data['Province'] == selected_province].index[0]
     pattern_shape_sequence[index] = ['x','x','x'] #index
 
-    fig_resp = px.bar(region_data, x="Province", y=["Total Evacuation Centers", "Total Health Facilities", "Total Elementary and Secondary Schools"],
+    fig_resp = px.bar(region_data, x="Province", y=["T_Evacuation", "T_Health", "T_School"],
                     # title="Total Response Facilities", 
                     pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence)
     
