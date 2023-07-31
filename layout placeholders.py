@@ -83,13 +83,14 @@ app.layout = html.Div(children=[
                                            id='choropleth-select',
                                            inline=True,
                                            className='mb-2',
-                                           style={"height": 50,  
+                                           style={"height": 20,  
                                                   "width": "100%"})]),
                         dcc.Loading(id="map-loading",
                                     type="circle",
-                                    children=dcc.Graph(id="ph-map"),
+                                    children=[html.H5(id="choropleth-title"),
+                                              dcc.Graph(id="ph-map")]
                                     # style={"height": 725, "width": "100%"} # choropleth map
-                                        )], gap=4)
+                                        )], gap=1)
                 ])
             ], width=5),
 
@@ -573,6 +574,23 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
     return fig_water, fig_toilet
 
 @callback(
+    Output("choropleth-title", "children"),
+    Input("choropleth-select", "value")
+)
+def choropleth_title(selected_type):
+    if 'average' == selected_type:
+        return "Average Risk Class per Province"
+    
+    elif 'typhoon' == selected_type:
+        return "Typhoon Risk Class (above Caterogy 3) per Province"
+    
+    elif 'flood' == selected_type:
+        return "Flood Risk Class per Province"
+    
+    else:
+        return "Landslide Risk Class per Province"
+
+@callback(
     Output('ph-map', 'figure'),
     Input('choropleth-select', 'value'),
 )
@@ -591,7 +609,7 @@ def display_map(selected_type):
                            hover_name = geodf.index,
                            hover_data= ['AvgRisk_Class', 'AvgRisk_Text'],
                            center={'lat': 12.099568, 'lon': 122.733168},
-                           height=750,
+                           height=725,
                            zoom=4.5)
         map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
         
@@ -609,7 +627,7 @@ def display_map(selected_type):
                            hover_name = geodf.index,
                            hover_data= ['Cy_Freq', 'Cy_Class', 'Cy_Text'],
                            center={'lat': 12.099568, 'lon': 122.733168},
-                           height=750,
+                           height=725,
                            zoom=4.5)
         map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     
@@ -627,7 +645,7 @@ def display_map(selected_type):
                            hover_name = geodf.index,
                            hover_data= ['AvgFLRisk', 'FloodClass', 'FloodText'],
                            center={'lat': 12.099568, 'lon': 122.733168},
-                           height=750,
+                           height=725,
                            zoom=4.5)
         map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
@@ -645,7 +663,7 @@ def display_map(selected_type):
                            hover_name = geodf.index,
                            hover_data= ['LS_Risk', 'LS_Class', 'LS_Text'],
                            center={'lat': 12.099568, 'lon': 122.733168},
-                           height=750,
+                           height=725,
                            zoom=4.5)
         map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
