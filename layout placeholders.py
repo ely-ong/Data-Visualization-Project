@@ -226,31 +226,31 @@ app.layout = html.Div(children=[
     ])
 ])
 
-# function to reuse for updating the options of a single province dropdown
+# set province options and value for first dropdown
+@callback(
+    Output("province-select1", "options"),
+    Output("province-select1", "value"),
+    Input("region-select", "value")
+)
+def update_province_select1(selected_region):
+    df_provinces = df_region_indexed.loc[selected_region]
 
-
-def update_province_options(output_id, input_id):
-
-    @callback(
-        Output(output_id, "options"),
-        Output(output_id, "value"),
-        Input(input_id, "value")
-    )
-    def update_options(selected_region):
-        df_provinces = df_region_indexed.loc[selected_region]
-
-        province_options = [{'label': i, 'value': i}
+    province_options = [{'label': i, 'value': i}
                             for i in df_provinces.Province.unique()]
-        value = province_options[0]['value']
+    value = province_options[0]['value']
 
-        return province_options, value
+    return province_options, value
 
+# set province options and value for second dropdown
+@callback(
+    Output("province-select2", "options"),
+    Output("province-select2", "value"),
+    Input("province-select1", "options"),
+    Input("province-select1", "value")
+)
+def update_province_select2(options, selected_province):
 
-# set province options for first dropdown
-update_province_options("province-select1", "region-select")
-
-# set province options for second dropdown
-update_province_options("province-select2", "region-select")
+    return options, selected_province
 
 # set up placeholder for unavailable data
 fig_none = go.Figure()
@@ -326,8 +326,10 @@ def update_pop_bidirectional(selected_province):
         margin=dict(l=5, r=5, t=5, b=5),
         xaxis=dict(
             title="Population",
-            tickvals=[-20000, 0, 20000],
-            ticktext=['20k', '0', '20k']
+            tickvals=[-260000, -240000, -220000, -200000, -180000, -160000, -140000,-120000, -100000, -80000, -60000, -40000, -20000, 0, 
+                      20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000, 200000, 220000, 240000, 260000],
+            ticktext=['260k', '240k', '220k', '200k', '180k', '160k', '140k', '120k', '100k', '80k', '60k', '40k', '20k', '0', 
+                      '20k', '40k', '60k', '80k', '100k', '120k', '140k', '160k', '180k', '200k', '220k', '240k', '260k']
         ),
         yaxis_title="Age Group",
         yaxis_autorange='reversed',
