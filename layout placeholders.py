@@ -314,7 +314,7 @@ def update_pop_bidirectional(selected_province):
         x=df['Female'].values,
         y=df['Age_Group'],
         name='Female',
-        text=df['Male'].values,
+        text=df['Female'].values,
         hoverinfo='name+text',
         orientation='h',
         marker_color='#ffb5b5')
