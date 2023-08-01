@@ -53,11 +53,11 @@ pop = pd.read_excel('data101_data/pop_per_reg.xlsx')
 
 response = pd.read_excel('data101_data/response_per_reg.xlsx')
 
-evac_and_schools_df = pd.read_excel(
-    'data101_data/evac_and_schools_df_cleaned.xlsx', sheet_name='consolidated')
+evac_and_schools_df = pd.read_excel('data101_data/evac_and_schools_df_cleaned.xlsx', sheet_name='consolidated')
 
-vuln_df = pd.read_excel(
-    'data101_data/vulnerable_groups_cleaned.xlsx', sheet_name='consolidated')
+vuln_df = pd.read_excel('data101_data/vulnerable_groups_cleaned.xlsx', sheet_name='consolidated')
+
+health_faci_df = pd.read_excel('data101_data/health_facilities_cleaned.xlsx', sheet_name='consolidated')
 
 # Mapbox token
 px.set_mapbox_access_token(open(".mapbox_token").read())
@@ -221,11 +221,47 @@ app.layout = html.Div(children=[
 
         html.Br(),
 
-        dbc.Row(children=[
-            dbc.Col(dbc.Placeholder(style={"height": 300,  # health facility single values
-                                           "width": "100%"}),
-                    width=5),
-            dbc.Col(dbc.Placeholder(style={"height": 300,  # health personnel single values
+        dbc.Row(children=[ #health facilities available
+            dbc.Col(children=[
+                dbc.Row(
+                    dbc.CardGroup([
+                        dbc.Card(
+                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                             dbc.CardBody(children=[
+                                 html.P(id='brgy-health-station-values')])],
+                            outline=True, color="light"),
+                        dbc.Card(
+                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                             dbc.CardBody(children=[
+                                 html.P(id='hospital-values')])],
+                            outline=True, color="light"),
+                        dbc.Card(
+                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                             dbc.CardBody(children=[
+                                 html.P(id='gen-clinic-laboratory-values')])],
+                            outline=True, color="light")
+                    ])
+                ),
+                dbc.Row(
+                    dbc.CardGroup([
+                        dbc.Card(
+                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                             dbc.CardBody(children=[
+                                 html.P(id='rural-health-unit-values')])],
+                            outline=True, color="light"),
+                        dbc.Card(
+                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                             dbc.CardBody(children=[
+                                 html.P(id='infirmary-values')])],
+                            outline=True, color="light"),
+                        dbc.Card(
+                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                             dbc.CardBody(children=[
+                                 html.P(id='birth-homes-values')])],
+                            outline=True, color="light")
+                    ]))],
+            width=5),
+            dbc.Col(dbc.Placeholder(style={"height": 300,  # health personnel bar
                                            "width": "100%"}))
         ]),
 
@@ -430,12 +466,14 @@ def update_pop_bidirectional(selected_province):
     return fig_bidirectional_pop
 
 # SINGLE VALUES VULNERABLE GROUPS CALLBACKS
+
 @callback(
     Output("disabled_male", "children"),
     Input("province-select1", "value")
 )
 def set_disabled_m_values(selected_province):
     return vuln_df.query(f"province=='{selected_province}'")["disability_male"]
+
 
 @callback(
     Output("older_male", "children"),
@@ -444,12 +482,14 @@ def set_disabled_m_values(selected_province):
 def set_old_m_values(selected_province):
     return vuln_df.query(f"province=='{selected_province}'")["older_male"]
 
+
 @callback(
     Output("child_headed_male", "children"),
     Input("province-select1", "value")
 )
 def set_childhead_m_values(selected_province):
     return vuln_df.query(f"province=='{selected_province}'")["child_headed_male"]
+
 
 @callback(
     Output("solo_parent_male", "children"),
@@ -458,12 +498,14 @@ def set_childhead_m_values(selected_province):
 def set_solo_parent_m_values(selected_province):
     return vuln_df.query(f"province=='{selected_province}'")["solo_parent_male"]
 
+
 @callback(
     Output("disabled_female", "children"),
     Input("province-select1", "value")
 )
 def set_disabled_f_values(selected_province):
     return vuln_df.query(f"province=='{selected_province}'")["disability_female"]
+
 
 @callback(
     Output("older_female", "children"),
@@ -472,12 +514,14 @@ def set_disabled_f_values(selected_province):
 def set_old_f_values(selected_province):
     return vuln_df.query(f"province=='{selected_province}'")["older_female"]
 
+
 @callback(
     Output("child_headed_female", "children"),
     Input("province-select1", "value")
 )
 def set_childhead_f_values(selected_province):
     return vuln_df.query(f"province=='{selected_province}'")["child_headed_female"]
+
 
 @callback(
     Output("solo_parent_female", "children"),
@@ -486,7 +530,7 @@ def set_childhead_f_values(selected_province):
 def set_solo_parent_f_values(selected_province):
     return vuln_df.query(f"province=='{selected_province}'")["solo_parent_female"]
 
-
+# SINGLE VALUES EVAC-SCHOOL CALLBACKS
 @callback(
     Output("evac-center-values", "children"),
     Input("province-select1", "value")
@@ -501,6 +545,49 @@ def set_evac_center_values(selected_province):
 )
 def set_evac_center_values(selected_province):
     return evac_and_schools_df.query(f"province=='{selected_province}'")["total_schools"]
+
+# SINGLE VALUES HEALTH FACILITIES CALLBACKS
+@callback(
+    Output("brgy-health-station-values", "children"),
+    Input("province-select1", "value")
+)
+def set_brgy_health_station_values(selected_province):
+    return health_faci_df.query(f"province=='{selected_province}'")["brgy_health_station"]
+
+@callback(
+    Output("hospital-values", "children"),
+    Input("province-select1", "value")
+)
+def set_hospital_values(selected_province):
+    return health_faci_df.query(f"province=='{selected_province}'")["hospital"]
+
+@callback(
+    Output("gen-clinic-laboratory-values", "children"),
+    Input("province-select1", "value")
+)
+def set_gen_clinic_laboratory_values(selected_province):
+    return health_faci_df.query(f"province=='{selected_province}'")["gen_clinic_laboratory"]
+
+@callback(
+    Output("rural-health-unit-values", "children"),
+    Input("province-select1", "value")
+)
+def set_rural_health_unit_values(selected_province):
+    return health_faci_df.query(f"province=='{selected_province}'")["rural_health_unit"]
+
+@callback(
+    Output("infirmary-values", "children"),
+    Input("province-select1", "value")
+)
+def set_infirmary_values(selected_province):
+    return health_faci_df.query(f"province=='{selected_province}'")["infirmary"]
+
+@callback(
+    Output("birth-homes-values", "children"),
+    Input("province-select1", "value")
+)
+def set_birthing_homes_values(selected_province):
+    return health_faci_df.query(f"province=='{selected_province}'")["birthing_homes"]
 
 
 @callback(
@@ -781,6 +868,7 @@ def choropleth_title(selected_type):
     else:
         return "Landslide Risk Class per Province"
 
+
 @callback(
     Output('ph-map', 'figure'),
     Input('choropleth-select', 'value'),
@@ -790,73 +878,81 @@ def display_map(selected_type):
         geodf = average_gdf_indexed
 
         map_fig = px.choropleth_mapbox(geodf,
-                           geojson = geodf.geometry,
-                           locations = geodf.index,
-                           color='AvgRisk_Class',
-                           color_continuous_scale= px.colors.sequential.OrRd,
-                           range_color=(0, 4),
-                           mapbox_style="carto-positron",
-                           title = "Average Risk Class per Province",
-                           hover_name = geodf.index,
-                           hover_data= ['AvgRisk_Class', 'AvgRisk_Text'],
-                           center={'lat': 12.099568, 'lon': 122.733168},
-                           height=725,
-                           zoom=4.5)
-        map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+                                       geojson=geodf.geometry,
+                                       locations=geodf.index,
+                                       color='AvgRisk_Class',
+                                       color_continuous_scale=px.colors.sequential.OrRd,
+                                       range_color=(0, 4),
+                                       mapbox_style="carto-positron",
+                                       title="Average Risk Class per Province",
+                                       hover_name=geodf.index,
+                                       hover_data=[
+                                           'AvgRisk_Class', 'AvgRisk_Text'],
+                                       center={'lat': 12.099568,
+                                               'lon': 122.733168},
+                                       height=725,
+                                       zoom=4.5)
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     elif 'typhoon' == selected_type:
         geodf = cyclone_gdf_indexed
 
         map_fig = px.choropleth_mapbox(geodf,
-                           geojson = geodf.geometry,
-                           locations = geodf.index,
-                           color='Cy_Class',
-                           color_continuous_scale= px.colors.sequential.Burg,
-                           range_color=(0, 4),
-                           mapbox_style="carto-positron",
-                           title = "Typhoon Risk Class (above Category 3) per Province",
-                           hover_name = geodf.index,
-                           hover_data= ['Cy_Freq', 'Cy_Class', 'Cy_Text'],
-                           center={'lat': 12.099568, 'lon': 122.733168},
-                           height=725,
-                           zoom=4.5)
-        map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+                                       geojson=geodf.geometry,
+                                       locations=geodf.index,
+                                       color='Cy_Class',
+                                       color_continuous_scale=px.colors.sequential.Burg,
+                                       range_color=(0, 4),
+                                       mapbox_style="carto-positron",
+                                       title="Typhoon Risk Class (above Category 3) per Province",
+                                       hover_name=geodf.index,
+                                       hover_data=['Cy_Freq',
+                                                   'Cy_Class', 'Cy_Text'],
+                                       center={'lat': 12.099568,
+                                               'lon': 122.733168},
+                                       height=725,
+                                       zoom=4.5)
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     elif 'flood' == selected_type:
         geodf = flood_gdf_indexed
 
         map_fig = px.choropleth_mapbox(geodf,
-                           geojson = geodf.geometry,
-                           locations = geodf.index,
-                           color='FloodClass',
-                           color_continuous_scale= px.colors.sequential.Teal,
-                           range_color=(0, 4),
-                           mapbox_style="carto-positron",
-                           title = "Flood Risk Class per Province",
-                           hover_name = geodf.index,
-                           hover_data= ['AvgFLRisk', 'FloodClass', 'FloodText'],
-                           center={'lat': 12.099568, 'lon': 122.733168},
-                           height=725,
-                           zoom=4.5)
-        map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+                                       geojson=geodf.geometry,
+                                       locations=geodf.index,
+                                       color='FloodClass',
+                                       color_continuous_scale=px.colors.sequential.Teal,
+                                       range_color=(0, 4),
+                                       mapbox_style="carto-positron",
+                                       title="Flood Risk Class per Province",
+                                       hover_name=geodf.index,
+                                       hover_data=['AvgFLRisk',
+                                                   'FloodClass', 'FloodText'],
+                                       center={'lat': 12.099568,
+                                               'lon': 122.733168},
+                                       height=725,
+                                       zoom=4.5)
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     else:
         geodf = landslide_gdf_indexed
 
         map_fig = px.choropleth_mapbox(geodf,
-                           geojson = geodf.geometry,
-                           locations = geodf.index,
-                           color='LS_Class',
-                           color_continuous_scale= px.colors.sequential.Brwnyl,
-                           range_color=(0, 4),
-                           mapbox_style="carto-positron",
-                           title = "Landslide Risk Class per Province",
-                           hover_name = geodf.index,
-                           hover_data= ['LS_Risk', 'LS_Class', 'LS_Text'],
-                           center={'lat': 12.099568, 'lon': 122.733168},
-                           height=725,
-                           zoom=4.5)
-        map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+                                       geojson=geodf.geometry,
+                                       locations=geodf.index,
+                                       color='LS_Class',
+                                       color_continuous_scale=px.colors.sequential.Brwnyl,
+                                       range_color=(0, 4),
+                                       mapbox_style="carto-positron",
+                                       title="Landslide Risk Class per Province",
+                                       hover_name=geodf.index,
+                                       hover_data=['LS_Risk',
+                                                   'LS_Class', 'LS_Text'],
+                                       center={'lat': 12.099568,
+                                               'lon': 122.733168},
+                                       height=725,
+                                       zoom=4.5)
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     return map_fig
 
