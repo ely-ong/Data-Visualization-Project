@@ -34,26 +34,33 @@ df_secondary_indexed = df_secondary.set_index(['Region', 'Province'])
 
 df_pop_by_gender_age = pd.read_csv('data101_data/bidirectional_df.csv')
 
-average_gdf = gpd.read_file('data101_data/final_aggregate.geojson', driver='GeoJSON')
+average_gdf = gpd.read_file(
+    'data101_data/final_aggregate.geojson', driver='GeoJSON')
 average_gdf_indexed = average_gdf.set_index('adm2_name')
 
-cyclone_gdf = gpd.read_file('data101_data/final_cyclone.geojson', driver='GeoJSON')
+cyclone_gdf = gpd.read_file(
+    'data101_data/final_cyclone.geojson', driver='GeoJSON')
 cyclone_gdf_indexed = cyclone_gdf.set_index('adm2_name')
 
 flood_gdf = gpd.read_file('data101_data/final_flood.geojson', driver='GeoJSON')
 flood_gdf_indexed = flood_gdf.set_index('adm2_name')
 
-landslide_gdf = gpd.read_file('data101_data/final_landslide.geojson', driver='GeoJSON')
+landslide_gdf = gpd.read_file(
+    'data101_data/final_landslide.geojson', driver='GeoJSON')
 landslide_gdf_indexed = landslide_gdf.set_index('adm2_name')
 
 pop = pd.read_excel('data101_data/pop_per_reg.xlsx')
 
 response = pd.read_excel('data101_data/response_per_reg.xlsx')
 
+evac_and_schools_df = pd.read_excel(
+    'data101_data/evac_and_schools_df_cleaned.xlsx', sheet_name='consolidated')
+
+vuln_df = pd.read_excel(
+    'data101_data/vulnerable_groups_cleaned.xlsx', sheet_name='consolidated')
+
 # Mapbox token
 px.set_mapbox_access_token(open(".mapbox_token").read())
-
-# Plotly Express figs
 
 
 # Initialize Dash application
@@ -67,7 +74,6 @@ for i in regions:
         'value': i
     })
 
-
 app.layout = html.Div(children=[
     dbc.Container([
         html.Br(),
@@ -80,21 +86,21 @@ app.layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Row(children=[
                     dbc.Stack(children=[
-                        dbc.Col(children=[ #radio buttons, filters for choropleth 
+                        dbc.Col(children=[  # radio buttons, filters for choropleth
                             html.H6(children="Select Risk Class Type"),
-                            dbc.RadioItems(options = ['average', 'typhoon','flood', 'landslide'],  
+                            dbc.RadioItems(options=['average', 'typhoon', 'flood', 'landslide'],
                                            value='average',
                                            id='choropleth-select',
                                            inline=True,
                                            className='mb-2',
-                                           style={"height": 20,  
+                                           style={"height": 20,
                                                   "width": "100%"})]),
                         dcc.Loading(id="map-loading",
                                     type="circle",
                                     children=[html.H5(id="choropleth-title"),
                                               dcc.Graph(id="ph-map")]
                                     # style={"height": 725, "width": "100%"} # choropleth map
-                                        )], gap=1)
+                                    )], gap=1)
                 ])
             ], width=5),
 
@@ -126,17 +132,76 @@ app.layout = html.Div(children=[
                                 id="pop-bidirectional",
                                 style={"height": 350,
                                        "width": "100%"})]),
-                        dbc.Col(children=dbc.Placeholder(style={"height": 350,  # vulnerable groups single values
-                                                                "width": "100%"}))
+                        dbc.Col(children=[  # vulnerable groups single values
+                            dbc.Row(
+                                dbc.CardGroup([
+                                    dbc.Card(
+                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                         dbc.CardBody(children=[
+                                             html.P(id='disabled_male')])],
+                                        outline=True, color="light"),
+                                    dbc.Card(
+                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                         dbc.CardBody(children=[
+                                             html.P(id='older_male')])],
+                                        outline=True, color="light"),
+                                    dbc.Card(
+                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                         dbc.CardBody(children=[
+                                             html.P(id='child_headed_male')])],
+                                        outline=True, color="light"),
+                                    dbc.Card(
+                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                         dbc.CardBody(children=[
+                                             html.P(id='solo_parent_male')])],
+                                        outline=True, color="light")
+                                ])),
+                            dbc.Row(
+                                dbc.CardGroup([
+                                    dbc.Card(
+                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                         dbc.CardBody(children=[
+                                             html.P(id='disabled_female')])],
+                                        outline=True, color="light"),
+                                    dbc.Card(
+                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                         dbc.CardBody(children=[
+                                             html.P(id='older_female')])],
+                                        outline=True, color="light"),
+                                    dbc.Card(
+                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                         dbc.CardBody(children=[
+                                             html.P(id='child_headed_female')])],
+                                        outline=True, color="light"),
+                                    dbc.Card(
+                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                         dbc.CardBody(children=[
+                                             html.P(id='solo_parent_female')])],
+                                        outline=True, color="light")
+                                ])
+                            )
+                        ])
                     ]),
 
-
-
                     dbc.Row(children=[
-                        dbc.Col(children=dbc.Placeholder(style={"height": 350,  # num of evac centers single value
-                                                                "width": "100%"})),
-                        dbc.Col(children=dbc.Placeholder(style={"height": 350,  # num of schools single value
-                                                                "width": "100%"})),
+                        dbc.Col(dbc.Card(  # num of evac centers single value
+                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                             dbc.CardBody(children=[
+                                html.H5("Evacuation Centers"),
+                                html.H3(id='evac-center-values')])],
+                            outline=True, color="light"),
+                            style={"height": 350,
+                                   "width": "100%"}),
+
+                        dbc.Col(dbc.Card(  # num of schools single value
+                            [dbc.CardImg(src="/static/images/school.png", top=True),
+                             dbc.CardBody(children=[
+                                html.H5("Schools"),
+                                html.H3(id='school-values')])],
+                            outline=True, color="light"),
+                            style={"height": 350,
+                                   "width": "100%"}),
+
                         dbc.Col(children=[  # elem pie
                                 html.H6(id="elem-title"),
                                 dcc.Graph(
@@ -202,7 +267,7 @@ app.layout = html.Div(children=[
                 html.H6(children="Select Province/District to Highlight"),
                 dcc.Dropdown(
                     id="province-select2",
-                    value = "province-select1",
+                    value="province-select1",
                     clearable=False,
                     style={"height": 30,
                            "width": "100%"})],
@@ -215,19 +280,19 @@ app.layout = html.Div(children=[
         dbc.Row(children=[
             dbc.Col(children=[
                 dbc.Stack(children=[
-                    dbc.Col(children=[ # pop per province bar
-                        html.H6(id = "pop-per-prov-title"),
+                    dbc.Col(children=[  # pop per province bar
+                        html.H6(id="pop-per-prov-title"),
                         dcc.Graph(
                             id="pop-per-prov",
                             style={"height": 300,
                                    "width": "100%"})]),
-                    dbc.Col(children=[ # response facilities per province bar
-                        html.H6(id = "response-per-prov-title"),
+                    dbc.Col(children=[  # response facilities per province bar
+                        html.H6(id="response-per-prov-title"),
                         dcc.Graph(
                             id="response-per-prov",
                             style={"height": 300,
                                    "width": "100%"})
-                                   ])
+                    ])
                 ])
             ], width=5),
 
@@ -243,6 +308,8 @@ app.layout = html.Div(children=[
 ])
 
 # set province options and value for first dropdown
+
+
 @callback(
     Output("province-select1", "options"),
     Output("province-select1", "value"),
@@ -253,12 +320,14 @@ def update_province_options(selected_region):
     df_provinces = df_region_indexed.loc[selected_region]
 
     province_options = [{'label': i, 'value': i}
-                            for i in df_provinces.Province.unique()]
+                        for i in df_provinces.Province.unique()]
     value = province_options[0]['value']
 
     return province_options, value, province_options
 
 # set province value for second dropdown
+
+
 @callback(
     Output("province-select2", "value"),
     Input("province-select1", "value")
@@ -266,6 +335,7 @@ def update_province_options(selected_region):
 def update_province_select2(selected_province):
 
     return selected_province
+
 
 # set up placeholder for unavailable data
 fig_none = go.Figure()
@@ -289,43 +359,46 @@ fig_none.update_layout(
 def set_pop_bidirectional_title(selected_province):
     return f'Population of {selected_province} by Age Group and Sex'
 
-@callback(
-        Output("pop-bidirectional", "figure"),
-        Input("province-select1", "value")
-)
 
+@callback(
+    Output("pop-bidirectional", "figure"),
+    Input("province-select1", "value")
+)
 def update_pop_bidirectional(selected_province):
     def sort_by_age_grp(df):
-        grp_dct_map = {'0 - 4':0, '5 - 9':1, '10 - 14':2, '15 - 19':3, '20 - 24':4, #dictionary for ordering age groups
-                    '25 - 29':5, '30 - 34':6, '35 - 39':7, '40 - 44':8, '45 - 49':9, 
-                    '50 - 54':10, '55 - 59':11, '60 - 64':12, '65 - 69':13, '70 - 74':14,
-                    '75 - 79':15, '>= 80':16}
-        
-        df['age_index'] = df['Age_Group'].map(grp_dct_map) #create new column of index
-        df = df.set_index('age_index').sort_index() #sort df by index starting from youngest to oldest
-        
+        grp_dct_map = {'0 - 4': 0, '5 - 9': 1, '10 - 14': 2, '15 - 19': 3, '20 - 24': 4,  # dictionary for ordering age groups
+                       '25 - 29': 5, '30 - 34': 6, '35 - 39': 7, '40 - 44': 8, '45 - 49': 9,
+                       '50 - 54': 10, '55 - 59': 11, '60 - 64': 12, '65 - 69': 13, '70 - 74': 14,
+                       '75 - 79': 15, '>= 80': 16}
+
+        df['age_index'] = df['Age_Group'].map(
+            grp_dct_map)  # create new column of index
+        # sort df by index starting from youngest to oldest
+        df = df.set_index('age_index').sort_index()
+
         return df
-     
-    grpby_ph = df_pop_by_gender_age[df_pop_by_gender_age['Province']==selected_province].groupby(by='Age_Group', as_index=False, sort=False).sum()
+
+    grpby_ph = df_pop_by_gender_age[df_pop_by_gender_age['Province'] == selected_province].groupby(
+        by='Age_Group', as_index=False, sort=False).sum()
     grpby_ph = sort_by_age_grp(grpby_ph)
 
-    df=grpby_ph
+    df = grpby_ph
 
     fig_bidirectional_pop = go.Figure()
 
     # Create the bidirectional graph
     fig_bidirectional_pop.add_trace(go.Bar(
-            x=-df['Male'].values, 
-            y=df['Age_Group'],
-            name='Male',
-            text=df['Male'].values,
-            hoverinfo='name+text', 
-            orientation='h',
-            marker_color='#01365c'
-        )
-    ) 
+        x=-df['Male'].values,
+        y=df['Age_Group'],
+        name='Male',
+        text=df['Male'].values,
+        hoverinfo='name+text',
+        orientation='h',
+        marker_color='#01365c'
+    )
+    )
 
-    fig_bidirectional_pop.add_trace(go.Bar( 
+    fig_bidirectional_pop.add_trace(go.Bar(
         x=df['Female'].values,
         y=df['Age_Group'],
         name='Female',
@@ -341,9 +414,9 @@ def update_pop_bidirectional(selected_province):
         margin=dict(l=5, r=5, t=5, b=5),
         xaxis=dict(
             title="Population",
-            tickvals=[-260000, -240000, -220000, -200000, -180000, -160000, -140000,-120000, -100000, -80000, -60000, -40000, -20000, 0, 
+            tickvals=[-260000, -240000, -220000, -200000, -180000, -160000, -140000, -120000, -100000, -80000, -60000, -40000, -20000, 0,
                       20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000, 200000, 220000, 240000, 260000],
-            ticktext=['260k', '240k', '220k', '200k', '180k', '160k', '140k', '120k', '100k', '80k', '60k', '40k', '20k', '0', 
+            ticktext=['260k', '240k', '220k', '200k', '180k', '160k', '140k', '120k', '100k', '80k', '60k', '40k', '20k', '0',
                       '20k', '40k', '60k', '80k', '100k', '120k', '140k', '160k', '180k', '200k', '220k', '240k', '260k']
         ),
         yaxis_title="Age Group",
@@ -355,6 +428,79 @@ def update_pop_bidirectional(selected_province):
     )
 
     return fig_bidirectional_pop
+
+# SINGLE VALUES VULNERABLE GROUPS CALLBACKS
+@callback(
+    Output("disabled_male", "children"),
+    Input("province-select1", "value")
+)
+def set_disabled_m_values(selected_province):
+    return vuln_df.query(f"province=='{selected_province}'")["disability_male"]
+
+@callback(
+    Output("older_male", "children"),
+    Input("province-select1", "value")
+)
+def set_old_m_values(selected_province):
+    return vuln_df.query(f"province=='{selected_province}'")["older_male"]
+
+@callback(
+    Output("child_headed_male", "children"),
+    Input("province-select1", "value")
+)
+def set_childhead_m_values(selected_province):
+    return vuln_df.query(f"province=='{selected_province}'")["child_headed_male"]
+
+@callback(
+    Output("solo_parent_male", "children"),
+    Input("province-select1", "value")
+)
+def set_solo_parent_m_values(selected_province):
+    return vuln_df.query(f"province=='{selected_province}'")["solo_parent_male"]
+
+@callback(
+    Output("disabled_female", "children"),
+    Input("province-select1", "value")
+)
+def set_disabled_f_values(selected_province):
+    return vuln_df.query(f"province=='{selected_province}'")["disability_female"]
+
+@callback(
+    Output("older_female", "children"),
+    Input("province-select1", "value")
+)
+def set_old_f_values(selected_province):
+    return vuln_df.query(f"province=='{selected_province}'")["older_female"]
+
+@callback(
+    Output("child_headed_female", "children"),
+    Input("province-select1", "value")
+)
+def set_childhead_f_values(selected_province):
+    return vuln_df.query(f"province=='{selected_province}'")["child_headed_female"]
+
+@callback(
+    Output("solo_parent_female", "children"),
+    Input("province-select1", "value")
+)
+def set_solo_parent_f_values(selected_province):
+    return vuln_df.query(f"province=='{selected_province}'")["solo_parent_female"]
+
+
+@callback(
+    Output("evac-center-values", "children"),
+    Input("province-select1", "value")
+)
+def set_evac_center_values(selected_province):
+    return evac_and_schools_df.query(f"province=='{selected_province}'")["evacuation_centers"]
+
+
+@callback(
+    Output("school-values", "children"),
+    Input("province-select1", "value")
+)
+def set_evac_center_values(selected_province):
+    return evac_and_schools_df.query(f"province=='{selected_province}'")["total_schools"]
 
 
 @callback(
@@ -372,6 +518,7 @@ def set_elem_title(selected_province):
 def set_secondary_title(selected_province):
     return 'Percentage of Secondary Students in '+selected_province+' by Sex'
 
+
 @callback(
     Output("pop-per-prov-title", "children"),
     Input("region-select", "value")
@@ -379,12 +526,14 @@ def set_secondary_title(selected_province):
 def set_pop_per_prov_title(selected_region):
     return 'Population per Province in '+selected_region
 
+
 @callback(
     Output("response-per-prov-title", "children"),
     Input("region-select", "value")
 )
 def set_pop_per_prov_title(selected_region):
     return 'Total Response Facilities per Province in '+selected_region
+
 
 @callback(
     Output("elem-pie", "figure"),
@@ -614,6 +763,7 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
 
     return fig_water, fig_toilet
 
+
 @callback(
     Output("choropleth-title", "children"),
     Input("choropleth-select", "value")
@@ -621,13 +771,13 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
 def choropleth_title(selected_type):
     if 'average' == selected_type:
         return "Average Risk Class per Province"
-    
+
     elif 'typhoon' == selected_type:
         return "Typhoon Risk Class (above Category 3) per Province"
-    
+
     elif 'flood' == selected_type:
         return "Flood Risk Class per Province"
-    
+
     else:
         return "Landslide Risk Class per Province"
 
@@ -653,7 +803,7 @@ def display_map(selected_type):
                            height=725,
                            zoom=4.5)
         map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-        
+
     elif 'typhoon' == selected_type:
         geodf = cyclone_gdf_indexed
 
@@ -671,7 +821,7 @@ def display_map(selected_type):
                            height=725,
                            zoom=4.5)
         map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    
+
     elif 'flood' == selected_type:
         geodf = flood_gdf_indexed
 
@@ -710,12 +860,12 @@ def display_map(selected_type):
 
     return map_fig
 
+
 @callback(
     Output('pop-per-prov', 'figure'),
     Input('region-select', 'value'),
     Input('province-select2', 'value'),
 )
-
 def pop_per_prov(selected_region, selected_province):
     region_name = selected_region
 
@@ -726,40 +876,44 @@ def pop_per_prov(selected_region, selected_province):
     region_data['province_id'] = [str(i) for i in region_data.index]
 
     color_discrete_sequence = ['lightslategray',]*len(region_data)
-    index =  region_data.loc[region_data['Province'] == selected_province].index[0]
-    color_discrete_sequence[index] = ['crimson'] #index
+    index = region_data.loc[region_data['Province']
+                            == selected_province].index[0]
+    color_discrete_sequence[index] = ['crimson']  # index
 
-    fig_pop=px.bar(region_data,x='Province',y='Total Population',
-            color = 'province_id',
-            color_discrete_sequence=color_discrete_sequence,
-            )
-    
+    fig_pop = px.bar(region_data, x='Province', y='Total Population',
+                     color='province_id',
+                     color_discrete_sequence=color_discrete_sequence,
+                     )
+
     return fig_pop
+
 
 @callback(
     Output('response-per-prov', 'figure'),
     Input('region-select', 'value'),
     Input('province-select2', 'value'),
 )
-
 def response_per_prov(selected_region, selected_province):
     region_name = selected_region
 
     # Filter the DataFrame by the given region
-    region_data = response[response['Region'] == region_name].copy().reset_index()
+    region_data = response[response['Region']
+                           == region_name].copy().reset_index()
 
     # Add a 'province_id' column to the filtered DataFrame
     region_data['province_id'] = [str(i) for i in region_data.index]
 
     pattern_shape_sequence = ['',]*len(region_data)
-    index =  region_data.loc[region_data['Province'] == selected_province].index[0]
-    pattern_shape_sequence[index] = ['x','x','x'] #index
+    index = region_data.loc[region_data['Province']
+                            == selected_province].index[0]
+    pattern_shape_sequence[index] = ['x', 'x', 'x']  # index
 
     fig_resp = px.bar(region_data, x="Province", y=["T_Evacuation", "T_Health", "T_School"],
-                    # title="Total Response Facilities", 
-                    pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence)
-    
+                      # title="Total Response Facilities",
+                      pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence)
+
     return fig_resp
+
 
 # Run the app
 if __name__ == '__main__':
