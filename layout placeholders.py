@@ -132,51 +132,84 @@ app.layout = html.Div(children=[
                                 id="pop-bidirectional",
                                 style={"height": 350,
                                        "width": "100%"})]),
-                        dbc.Col(children=[  # vulnerable groups single values
-                            dbc.Row(
+                        dbc.Col(children=[ 
+                            html.Br(),
+                            dbc.Row( # vulnerable groups single values
                                 dbc.CardGroup([
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                        [dbc.CardImg(src="/static/images/disabled_male.png", 
+                                                     top=True,
+                                                     title="Disabled Males"),
                                          dbc.CardBody(children=[
-                                             html.P(id='disabled_male')])],
+                                             html.H6(id='disabled_male',
+                                                     style={'text-align': 'center'}
+                                                     )])],
                                         outline=True, color="light"),
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                        [dbc.CardImg(src="/static/images/elderly_male.png", 
+                                                     top=True,
+                                                     title="Older Males"),
                                          dbc.CardBody(children=[
-                                             html.P(id='older_male')])],
+                                             html.H6(id='older_male',
+                                                     style={'text-align': 'center'})])],
                                         outline=True, color="light"),
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                        [dbc.CardImg(src="/static/images/children-headed_male.png", 
+                                                     top=True,
+                                                     title="Child-headed Males"),
                                          dbc.CardBody(children=[
-                                             html.P(id='child_headed_male')])],
+                                             html.H6(id='child_headed_male', 
+                                                     style={'text-align': 'center'}
+                                                     )])],
                                         outline=True, color="light"),
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                        [dbc.CardImg(src="/static/images/solo_parent_male.png", 
+                                                     top=True,
+                                                     title="Solo-parent Males"),
                                          dbc.CardBody(children=[
-                                             html.P(id='solo_parent_male')])],
+                                             html.H6(id='solo_parent_male',
+                                                     style={'text-align': 'center'}
+                                                     )])],
                                         outline=True, color="light")
                                 ])),
+                            html.Br(),
                             dbc.Row(
                                 dbc.CardGroup([
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                        [dbc.CardImg(src="/static/images/disabled_female.png", 
+                                                     top=True,
+                                                     title="Disabled Females"),
                                          dbc.CardBody(children=[
-                                             html.P(id='disabled_female')])],
+                                             html.H6(id='disabled_female', 
+                                                     style={'text-align': 'center'}
+                                                     )])],
                                         outline=True, color="light"),
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                        [dbc.CardImg(src="/static/images/elderly_male.png", 
+                                                     top=True,
+                                                     title="Older Females"),
                                          dbc.CardBody(children=[
-                                             html.P(id='older_female')])],
+                                             html.H6(id='older_female',
+                                                     style={'text-align': 'center'}
+                                                     )])],
                                         outline=True, color="light"),
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                        [dbc.CardImg(src="/static/images/children-headed_female.png", 
+                                                     top=True,
+                                                     title="Child-headed Females"),
                                          dbc.CardBody(children=[
-                                             html.P(id='child_headed_female')])],
+                                             html.H6(id='child_headed_female',
+                                                     style={'text-align': 'center'}
+                                                     )])],
                                         outline=True, color="light"),
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                                        [dbc.CardImg(src="/static/images/solo_parent_female.png", 
+                                                     top=True,
+                                                     title="Solo-parent Males"),
                                          dbc.CardBody(children=[
-                                             html.P(id='solo_parent_female')])],
+                                             html.H6(id='solo_parent_female',
+                                                     style={'text-align': 'center'}
+                                                     )])],
                                         outline=True, color="light")
                                 ])
                             )
@@ -185,19 +218,29 @@ app.layout = html.Div(children=[
 
                     dbc.Row(children=[
                         dbc.Col(dbc.Card(  # num of evac centers single value
-                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                            [dbc.CardImg(src="/static/images/evac_center.png", 
+                                         top=True,
+                                         title="Evacuation Centers"),
                              dbc.CardBody(children=[
-                                html.H5("Evacuation Centers"),
-                                html.H3(id='evac-center-values')])],
+                                html.H3(id='evac-center-values', 
+                                        style={'text-align': 'center'}),
+                                html.H5("Evacuation Centers", 
+                                        style={'text-align': 'center'})
+                            ])],
                             outline=True, color="light"),
                             style={"height": 350,
                                    "width": "100%"}),
 
                         dbc.Col(dbc.Card(  # num of schools single value
-                            [dbc.CardImg(src="/static/images/school.png", top=True),
+                            [dbc.CardImg(src="/static/images/school.png", 
+                                         top=True,
+                                         title="Schools"),
                              dbc.CardBody(children=[
-                                html.H5("Schools"),
-                                html.H3(id='school-values')])],
+                                html.H3(id='school-values',
+                                        style={'text-align': 'center'}),
+                                html.H5("Schools",
+                                        style={'text-align': 'center'})
+                            ])],
                             outline=True, color="light"),
                             style={"height": 350,
                                    "width": "100%"}),
@@ -226,38 +269,62 @@ app.layout = html.Div(children=[
                 dbc.Row(
                     dbc.CardGroup([
                         dbc.Card(
-                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                            [dbc.CardImg(src="/static/images/brgy_health_station.png", 
+                                         top=True,
+                                         title="Barangay Health Stations"),
                              dbc.CardBody(children=[
-                                 html.P(id='brgy-health-station-values')])],
+                                 html.H4(id='brgy-health-station-values',
+                                         style={'text-align': 'center'}
+                                         )])],
                             outline=True, color="light"),
                         dbc.Card(
-                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                            [dbc.CardImg(src="/static/images/hospital.png", 
+                                         top=True,
+                                         title="Hospitals"),
                              dbc.CardBody(children=[
-                                 html.P(id='hospital-values')])],
+                                 html.H4(id='hospital-values',
+                                         style={'text-align': 'center'}
+                                         )])],
                             outline=True, color="light"),
                         dbc.Card(
-                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                            [dbc.CardImg(src="/static/images/health_clinic_laboratory.png", 
+                                         top=True,
+                                         title="General Clinic Laboratories"),
                              dbc.CardBody(children=[
-                                 html.P(id='gen-clinic-laboratory-values')])],
+                                 html.H4(id='gen-clinic-laboratory-values',
+                                         style={'text-align': 'center'}
+                                         )])],
                             outline=True, color="light")
                     ])
                 ),
                 dbc.Row(
                     dbc.CardGroup([
                         dbc.Card(
-                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                            [dbc.CardImg(src="/static/images/rural.png", 
+                                         top=True,
+                                         title="Rural Health Units"),
                              dbc.CardBody(children=[
-                                 html.P(id='rural-health-unit-values')])],
+                                 html.H4(id='rural-health-unit-values',
+                                         style={'text-align': 'center'}
+                                         )])],
                             outline=True, color="light"),
                         dbc.Card(
-                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                            [dbc.CardImg(src="/static/images/infirmary.png", 
+                                         top=True,
+                                         title="Infirmaries"),
                              dbc.CardBody(children=[
-                                 html.P(id='infirmary-values')])],
+                                 html.H4(id='infirmary-values',
+                                         style={'text-align': 'center'}
+                                         )])],
                             outline=True, color="light"),
                         dbc.Card(
-                            [dbc.CardImg(src="/static/images/evac_center.png", top=True),
+                            [dbc.CardImg(src="/static/images/birthing_home.png", 
+                                         top=True,
+                                         title="Birthing Homes"),
                              dbc.CardBody(children=[
-                                 html.P(id='birth-homes-values')])],
+                                 html.H4(id='birth-homes-values',
+                                         style={'text-align': 'center'}
+                                         )])],
                             outline=True, color="light")
                     ]))],
             width=5),
@@ -472,63 +539,64 @@ def update_pop_bidirectional(selected_province):
     Input("province-select1", "value")
 )
 def set_disabled_m_values(selected_province):
-    return vuln_df.query(f"province=='{selected_province}'")["disability_male"]
-
+    disabled_m = vuln_df.query(f"province=='{selected_province}'")["disability_male"]
+    return "{:,}".format(disabled_m.iloc[0]) 
 
 @callback(
     Output("older_male", "children"),
     Input("province-select1", "value")
 )
 def set_old_m_values(selected_province):
-    return vuln_df.query(f"province=='{selected_province}'")["older_male"]
-
+    old_male =  vuln_df.query(f"province=='{selected_province}'")["older_male"]
+    return "{:,}".format(old_male.iloc[0]) 
 
 @callback(
     Output("child_headed_male", "children"),
     Input("province-select1", "value")
 )
 def set_childhead_m_values(selected_province):
-    return vuln_df.query(f"province=='{selected_province}'")["child_headed_male"]
-
+    child_headed_m = vuln_df.query(f"province=='{selected_province}'")["child_headed_male"]
+    return "{:,}".format(child_headed_m.iloc[0]) 
 
 @callback(
     Output("solo_parent_male", "children"),
     Input("province-select1", "value")
 )
 def set_solo_parent_m_values(selected_province):
-    return vuln_df.query(f"province=='{selected_province}'")["solo_parent_male"]
-
+    solo_par_m = vuln_df.query(f"province=='{selected_province}'")["solo_parent_male"]
+    return "{:,}".format(solo_par_m.iloc[0]) 
 
 @callback(
     Output("disabled_female", "children"),
     Input("province-select1", "value")
 )
 def set_disabled_f_values(selected_province):
-    return vuln_df.query(f"province=='{selected_province}'")["disability_female"]
-
+    disabled_f = vuln_df.query(f"province=='{selected_province}'")["disability_female"]
+    return "{:,}".format(disabled_f.iloc[0]) 
 
 @callback(
     Output("older_female", "children"),
     Input("province-select1", "value")
 )
 def set_old_f_values(selected_province):
-    return vuln_df.query(f"province=='{selected_province}'")["older_female"]
-
+    old_female =  vuln_df.query(f"province=='{selected_province}'")["older_female"]
+    return "{:,}".format(old_female.iloc[0]) 
 
 @callback(
     Output("child_headed_female", "children"),
     Input("province-select1", "value")
 )
 def set_childhead_f_values(selected_province):
-    return vuln_df.query(f"province=='{selected_province}'")["child_headed_female"]
-
+    child_headed_f = vuln_df.query(f"province=='{selected_province}'")["child_headed_female"]
+    return "{:,}".format(child_headed_f.iloc[0]) 
 
 @callback(
     Output("solo_parent_female", "children"),
     Input("province-select1", "value")
 )
 def set_solo_parent_f_values(selected_province):
-    return vuln_df.query(f"province=='{selected_province}'")["solo_parent_female"]
+    solo_par_f = vuln_df.query(f"province=='{selected_province}'")["solo_parent_female"]
+    return "{:,}".format(solo_par_f.iloc[0])
 
 # SINGLE VALUES EVAC-SCHOOL CALLBACKS
 @callback(
@@ -536,15 +604,17 @@ def set_solo_parent_f_values(selected_province):
     Input("province-select1", "value")
 )
 def set_evac_center_values(selected_province):
-    return evac_and_schools_df.query(f"province=='{selected_province}'")["evacuation_centers"]
+    evac_center_value = evac_and_schools_df.query(f"province=='{selected_province}'")["evacuation_centers"]
+    return "{:,}".format(evac_center_value.iloc[0]) 
 
 
 @callback(
     Output("school-values", "children"),
     Input("province-select1", "value")
 )
-def set_evac_center_values(selected_province):
-    return evac_and_schools_df.query(f"province=='{selected_province}'")["total_schools"]
+def set_school_values(selected_province):
+    school_value = evac_and_schools_df.query(f"province=='{selected_province}'")["total_schools"]
+    return "{:,}".format(school_value.iloc[0]) 
 
 # SINGLE VALUES HEALTH FACILITIES CALLBACKS
 @callback(
@@ -552,42 +622,48 @@ def set_evac_center_values(selected_province):
     Input("province-select1", "value")
 )
 def set_brgy_health_station_values(selected_province):
-    return health_faci_df.query(f"province=='{selected_province}'")["brgy_health_station"]
+    brgy_health_station = health_faci_df.query(f"province=='{selected_province}'")["brgy_health_station"]
+    return "{:,}".format(brgy_health_station.iloc[0])
 
 @callback(
     Output("hospital-values", "children"),
     Input("province-select1", "value")
 )
 def set_hospital_values(selected_province):
-    return health_faci_df.query(f"province=='{selected_province}'")["hospital"]
+    hosp =  health_faci_df.query(f"province=='{selected_province}'")["hospital"]
+    return "{:,}".format(hosp.iloc[0]) 
 
 @callback(
     Output("gen-clinic-laboratory-values", "children"),
     Input("province-select1", "value")
 )
 def set_gen_clinic_laboratory_values(selected_province):
-    return health_faci_df.query(f"province=='{selected_province}'")["gen_clinic_laboratory"]
+    gen_clinic = health_faci_df.query(f"province=='{selected_province}'")["gen_clinic_laboratory"]
+    return "{:,}".format(gen_clinic.iloc[0]) 
 
 @callback(
     Output("rural-health-unit-values", "children"),
     Input("province-select1", "value")
 )
 def set_rural_health_unit_values(selected_province):
-    return health_faci_df.query(f"province=='{selected_province}'")["rural_health_unit"]
+    rural_unit = health_faci_df.query(f"province=='{selected_province}'")["rural_health_unit"]
+    return "{:,}".format(rural_unit.iloc[0]) 
 
 @callback(
     Output("infirmary-values", "children"),
     Input("province-select1", "value")
 )
 def set_infirmary_values(selected_province):
-    return health_faci_df.query(f"province=='{selected_province}'")["infirmary"]
+    infirmary =  health_faci_df.query(f"province=='{selected_province}'")["infirmary"]
+    return "{:,}".format(infirmary.iloc[0]) 
 
 @callback(
     Output("birth-homes-values", "children"),
     Input("province-select1", "value")
 )
 def set_birthing_homes_values(selected_province):
-    return health_faci_df.query(f"province=='{selected_province}'")["birthing_homes"]
+    birth_home = health_faci_df.query(f"province=='{selected_province}'")["birthing_homes"]
+    return "{:,}".format(birth_home.iloc[0]) 
 
 
 @callback(
