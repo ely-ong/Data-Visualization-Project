@@ -143,33 +143,48 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='disabled_male',
                                                      style={'text-align': 'center'}
-                                                     )])],
+                                                     ),
+                                             html.H6("Disabled Males", 
+                                                     style={'font-size': '12px',
+                                                            'text-align': 'center'})])],
                                         outline=True, color="light"),
                                     dbc.Card(
                                         [dbc.CardImg(src="/static/images/elderly_male.png", 
                                                      top=True,
-                                                     title="Older Males"),
+                                                     title="Elderly Males"),
                                          dbc.CardBody(children=[
                                              html.H6(id='older_male',
-                                                     style={'text-align': 'center'})])],
+                                                     style={'text-align': 'center'}),
+                                                     
+                                             html.H6("Elderly Males", 
+                                                    style={'font-size': '12px',
+                                                           'text-align': 'center'})])],
                                         outline=True, color="light"),
                                     dbc.Card(
                                         [dbc.CardImg(src="/static/images/children-headed_male.png", 
                                                      top=True,
-                                                     title="Child-headed Males"),
+                                                     title="Male Child-headed Families"),
                                          dbc.CardBody(children=[
                                              html.H6(id='child_headed_male', 
                                                      style={'text-align': 'center'}
-                                                     )])],
+                                                     ),
+                                                     
+                                             html.H6("Male Child-headed Families", 
+                                                    style={'font-size': '12px',
+                                                           'text-align': 'center'})])],
                                         outline=True, color="light"),
                                     dbc.Card(
                                         [dbc.CardImg(src="/static/images/solo_parent_male.png", 
                                                      top=True,
-                                                     title="Solo-parent Males"),
+                                                     title="Male Single Parents"),
                                          dbc.CardBody(children=[
                                              html.H6(id='solo_parent_male',
                                                      style={'text-align': 'center'}
-                                                     )])],
+                                                     ),
+                                                     
+                                             html.H6("Male Single Parents", 
+                                                    style={'font-size': '12px',
+                                                           'text-align': 'center'})])],
                                         outline=True, color="light")
                                 ])),
                             html.Br(),
@@ -182,34 +197,50 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='disabled_female', 
                                                      style={'text-align': 'center'}
-                                                     )])],
+                                                     ),
+                                                     
+                                             html.H6("Disabled Females", 
+                                                    style={'font-size': '12px',
+                                                        'text-align': 'center'})])],
                                         outline=True, color="light"),
                                     dbc.Card(
-                                        [dbc.CardImg(src="/static/images/elderly_male.png", 
+                                        [dbc.CardImg(src="/static/images/elderly_female.png", 
                                                      top=True,
-                                                     title="Older Females"),
+                                                     title="Elderly Females"),
                                          dbc.CardBody(children=[
                                              html.H6(id='older_female',
                                                      style={'text-align': 'center'}
-                                                     )])],
+                                                     ),
+                                                     
+                                             html.H6("Elderly Females", 
+                                                    style={'font-size': '12px',
+                                                           'text-align': 'center'})])],
                                         outline=True, color="light"),
                                     dbc.Card(
                                         [dbc.CardImg(src="/static/images/children-headed_female.png", 
                                                      top=True,
-                                                     title="Child-headed Females"),
+                                                     title="Female Child-headed Families"),
                                          dbc.CardBody(children=[
                                              html.H6(id='child_headed_female',
                                                      style={'text-align': 'center'}
-                                                     )])],
+                                                     ),
+                                                     
+                                             html.H6("Female Child-headed Families", 
+                                                    style={'font-size': '12px',
+                                                           'text-align': 'center'})])],
                                         outline=True, color="light"),
                                     dbc.Card(
                                         [dbc.CardImg(src="/static/images/solo_parent_female.png", 
                                                      top=True,
-                                                     title="Solo-parent Males"),
+                                                     title="Female Single Parents"),
                                          dbc.CardBody(children=[
                                              html.H6(id='solo_parent_female',
                                                      style={'text-align': 'center'}
-                                                     )])],
+                                                     ),
+                                                     
+                                             html.H6("Female Single Parents", 
+                                                    style={'font-size': '12px',
+                                                           'text-align': 'center'})])],
                                         outline=True, color="light")
                                 ])
                             )
@@ -275,7 +306,11 @@ app.layout = html.Div(children=[
                              dbc.CardBody(children=[
                                  html.H4(id='brgy-health-station-values',
                                          style={'text-align': 'center'}
-                                         )])],
+                                         ),
+                                                     
+                                 html.H6("Barangay Health Stations", 
+                                          style={
+                                          'text-align': 'center'})])],
                             outline=True, color="light"),
                         dbc.Card(
                             [dbc.CardImg(src="/static/images/hospital.png", 
@@ -284,7 +319,11 @@ app.layout = html.Div(children=[
                              dbc.CardBody(children=[
                                  html.H4(id='hospital-values',
                                          style={'text-align': 'center'}
-                                         )])],
+                                         ),
+                                                     
+                                 html.H6("Hospitals", 
+                                          style={
+                                          'text-align': 'center'})])],
                             outline=True, color="light"),
                         dbc.Card(
                             [dbc.CardImg(src="/static/images/health_clinic_laboratory.png", 
@@ -293,7 +332,11 @@ app.layout = html.Div(children=[
                              dbc.CardBody(children=[
                                  html.H4(id='gen-clinic-laboratory-values',
                                          style={'text-align': 'center'}
-                                         )])],
+                                         ),
+                                                     
+                                 html.H6("General Clinic Laboratories", 
+                                          style={
+                                          'text-align': 'center'})])],
                             outline=True, color="light")
                     ])
                 ),
@@ -306,7 +349,11 @@ app.layout = html.Div(children=[
                              dbc.CardBody(children=[
                                  html.H4(id='rural-health-unit-values',
                                          style={'text-align': 'center'}
-                                         )])],
+                                         ),
+                                                     
+                                 html.H6("Rural Health Units", 
+                                          style={
+                                          'text-align': 'center'})])],
                             outline=True, color="light"),
                         dbc.Card(
                             [dbc.CardImg(src="/static/images/infirmary.png", 
@@ -315,7 +362,11 @@ app.layout = html.Div(children=[
                              dbc.CardBody(children=[
                                  html.H4(id='infirmary-values',
                                          style={'text-align': 'center'}
-                                         )])],
+                                         ),
+                                                     
+                                 html.H6("Infirmaries", 
+                                          style={
+                                          'text-align': 'center'})])],
                             outline=True, color="light"),
                         dbc.Card(
                             [dbc.CardImg(src="/static/images/birthing_home.png", 
@@ -324,7 +375,11 @@ app.layout = html.Div(children=[
                              dbc.CardBody(children=[
                                  html.H4(id='birth-homes-values',
                                          style={'text-align': 'center'}
-                                         )])],
+                                         ),
+                                                     
+                                 html.H6("Birthing Homes", 
+                                          style={
+                                          'text-align': 'center'})])],
                             outline=True, color="light")
                     ]))],
             width=5),
