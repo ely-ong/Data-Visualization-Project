@@ -88,7 +88,7 @@ app.layout = html.Div(children=[
                     dbc.Stack(children=[
                         dbc.Col(children=[  # radio buttons, filters for choropleth
                             html.H6(children="Select Risk Class Type"),
-                            dbc.RadioItems(options=['average', 'typhoon', 'flood', 'landslide'],
+                            dbc.RadioItems(options=['Average', 'Typhoon', 'Flood', 'Landslide'],
                                            value='average',
                                            id='choropleth-select',
                                            inline=True,
