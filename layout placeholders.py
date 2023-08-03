@@ -59,7 +59,7 @@ vuln_df = pd.read_excel('data101_data/vulnerable_groups_cleaned.xlsx', sheet_nam
 
 health_faci_df = pd.read_excel('data101_data/health_facilities_cleaned.xlsx', sheet_name='consolidated')
 
-df_health_personnel = pd.read_excel('data101_data\df_health_personnel_pop.xlsx')
+df_health_personnel = pd.read_excel('data101_data\health_personnel_cleaned.xlsx')
 df_health_personnel_indexed = df_health_personnel.set_index(['Region', 'Province'])
 
 # Mapbox token
@@ -133,7 +133,7 @@ app.layout = html.Div(children=[
                             html.H6(id="pop-bidirectional-title"),
                             dcc.Graph(
                                 id="pop-bidirectional",
-                                style={"height": 350,
+                                style={"height": 440,
                                        "width": "100%"})]),
                         dbc.Col(children=[ 
                             html.Br(),
@@ -283,20 +283,20 @@ app.layout = html.Div(children=[
                                 html.H6(id="elem-title"),
                                 dcc.Graph(
                                     id="elem-pie",
-                                    style={"height": 350,
+                                    style={"height": 200,
                                            "width": "100%"})]),
                         dbc.Col(children=[  # secondary students pie
                                 html.H6(id="secondary-title"),
                                 dcc.Graph(
                                     id="secondary-pie",
-                                    style={"height": 350,
+                                    style={"height": 200,
                                            "width": "100%"})])
                     ])
                 ], gap=4)
             ])
         ]),
 
-        html.Br(),
+        # html.Br(),
 
         dbc.Row(children=[ #health facilities available
             dbc.Col(children=[
@@ -390,11 +390,12 @@ app.layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Stack(children=[
                     dbc.Col(children=[  # health personnel per province bar 
-                        html.H6(id="health-per-prov-title"),
+                        html.H5(id="health-per-prov-title",
+                                style={"width": 800}),
                         dcc.Graph(
                             id="health-per-prov",
-                            style={"height": 300,
-                                   "width": "100%"})]),
+                            style={"height": 500,
+                                   "width": 800})]),
                 ])
             ], width=5),
         ]),
@@ -454,13 +455,13 @@ app.layout = html.Div(children=[
                         html.H6(id="pop-per-prov-title"),
                         dcc.Graph(
                             id="pop-per-prov",
-                            style={"height": 300,
+                            style={"height": 400,
                                    "width": "100%"})]),
                     dbc.Col(children=[  # response facilities per province bar
                         html.H6(id="response-per-prov-title"),
                         dcc.Graph(
                             id="response-per-prov",
-                            style={"height": 300,
+                            style={"height": 400,
                                    "width": "100%"})
                     ])
                 ])
@@ -603,8 +604,14 @@ def update_pop_bidirectional(selected_province):
                       '20k', '40k', '60k', '80k', '100k', '120k', '140k', '160k', '180k', '200k', '220k', '240k', '260k']
         ),
         yaxis_title="Age Group",
-        yaxis_autorange='reversed',
+        # yaxis_autorange='reversed',
         showlegend=True,
+        legend=dict(
+                orientation="h",
+                xanchor='center',
+                yanchor='top',
+                x=0.5,
+                y=1.1),
         barmode='relative',
         bargap=0.05,
         bargroupgap=0
@@ -882,10 +889,7 @@ def update_heatmap(selected_region, selected_province):
 
     # if data row is full of 0, set figure to none
     if (shelter_counts == 0).all():
-
-        fig_shelter = fig_none
-
-        return fig_shelter
+        return fig_none
 
     # converting dataframe row of counts to array of shelter type percentages to fill up new dataframe
     shelter_counts = shelter_counts.values.flatten()
@@ -918,29 +922,49 @@ def update_heatmap(selected_region, selected_province):
 
     return fig_shelter
 
+@callback( # health personnel by province 
+    Output('health-per-prov-title', 'children'),
+    Input('province-select1', 'value'),
+)
+def health_personnel_prov(selected_province):
+    return "Percentage of Health Personnel per Type in "+selected_province 
 
 @callback( # health personnel by province 
     Output('health-per-prov', 'figure'),
     Input('region-select', 'value'),
     Input('province-select2', 'value'),
 )
-def health_per_prov(selected_region, selected_province):
+def health_personnel_prov(selected_region, selected_province):
 
-    # Filter the DataFrame by the given region
-    region_health_data = df_health_personnel[df_health_personnel['Region'] == selected_region].copy().reset_index()
+    personnel_counts = df_health_personnel_indexed.loc[selected_region, selected_province]
 
-    # Add a 'province_id' column to the filtered DataFrame
-    region_health_data['province_id'] = [str(i) for i in region_health_data.index]
+    # computing values to create new df
+    personnel = df_health_personnel_indexed.columns
+    personnel_counts = personnel_counts.values.flatten()
+    counts_sum = sum(personnel_counts)
+    personnel_percentages = [(round(i/counts_sum*100,2)) for i in personnel_counts]
 
-    color_discrete_sequence = ['lightslategray',]*len(region_health_data)
-    index = region_health_data.loc[region_health_data['Province']
-                            == selected_province].index[0]
-    color_discrete_sequence[index] = ['crimson']  # index
+    # creating new df
+    new_df = pd.DataFrame()
 
-    fig_health_per_prov = px.bar(region_health_data, x='Province', y='Total Health Personnel',
-                     color='province_id',
-                     color_discrete_sequence=color_discrete_sequence,
-                     )
+    new_df['Health Personnel Type'] = personnel
+    new_df['Number of Personnel'] = personnel_counts
+    new_df['Percentage'] = personnel_percentages
+
+    try:
+        fig_health_per_prov = px.bar(new_df,
+                             x='Health Personnel Type',
+                             y='Percentage',
+                             color='Percentage',
+                             color_continuous_scale = 'haline_r',
+                             text_auto=True)
+    except:
+        fig_health_per_prov = px.bar(new_df,
+                             x='Health Personnel',
+                             y='Percentage',
+                             color='Percentage',
+                             color_continuous_scale = 'haline_r',
+                             text_auto=True)
 
     return fig_health_per_prov
 
@@ -986,7 +1010,7 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
             autosize=True,
             legend=dict(
                 orientation="h",
-                font=dict(size=8)),
+                font=dict(size=10)),
             margin={'l': 0, 't': 3, 'r': 0})
         fig_water.update_traces(
             hoverinfo='label+value',
@@ -1024,7 +1048,7 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
             autosize=True,
             legend=dict(
                 orientation="h",
-                font=dict(size=8)),
+                font=dict(size=10)),
             margin={'l': 0, 't': 3, 'r': 0})
         fig_toilet.update_traces(
             hoverinfo='label+value', marker=dict(colors=toilet_color_map))
@@ -1157,7 +1181,14 @@ def pop_per_prov(selected_region, selected_province):
                             == selected_province].index[0]
     color_discrete_sequence[index] = ['crimson']  # index
 
-    fig_pop = px.bar(region_pop_data, x='Province', y='Total Population',
+    try:
+        fig_pop = px.bar(region_pop_data, x='Province', y='Total Population',
+                     color='province_id',
+                     color_discrete_sequence=color_discrete_sequence,
+                     text_auto='.2s'
+                     )
+    except:
+        fig_pop = px.bar(region_pop_data, x='Province', y='Total Population',
                      color='province_id',
                      color_discrete_sequence=color_discrete_sequence,
                      text_auto='.2s'
@@ -1204,15 +1235,15 @@ def response_per_prov(selected_region, selected_province):
     Input("region-select", "value"),
 )
 def scatter_plot(selected_region):
-    health_personnel_to_pop = df_health_personnel_indexed.loc[selected_region]
+    # health_personnel_to_pop = df_health_personnel_indexed.loc[selected_region]
 
-    fig_health_personnel = px.scatter(health_personnel_to_pop, 
-                                    labels=dict(x="Total Population", 
-                                                y="Total Health Personnel", 
-                                                color="Region",
-                                                size='Average Risk'))
+    # fig_health_personnel = px.scatter(health_personnel_to_pop, 
+    #                                 labels=dict(x="Total Population", 
+    #                                             y="Total Health Personnel", 
+    #                                             color="Region",
+    #                                             size='Average Risk'))
     
-    return fig_health_personnel
+    return fig_none # REPLACE 
 
 
 
