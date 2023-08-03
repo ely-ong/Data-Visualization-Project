@@ -91,7 +91,7 @@ app.layout = html.Div(children=[
                     dbc.Stack(children=[
                         dbc.Col(children=[  # radio buttons, filters for choropleth
                             html.H6(children="Select Risk Class Type"),
-                            dbc.RadioItems(options=['average', 'typhoon', 'flood', 'landslide'],
+                            dbc.RadioItems(options=['Average', 'Typhoon', 'Flood', 'Landslide'],
                                            value='average',
                                            id='choropleth-select',
                                            inline=True,
@@ -1152,7 +1152,12 @@ def pop_per_prov(selected_region, selected_province):
     fig_pop = px.bar(region_data, x='Province', y='Total Population',
                      color='province_id',
                      color_discrete_sequence=color_discrete_sequence,
+                     text_auto='.2s'
                      )
+    
+    fig_pop.update_layout(
+                        showlegend=False
+    )
 
     return fig_pop
 
@@ -1179,7 +1184,10 @@ def response_per_prov(selected_region, selected_province):
 
     fig_resp = px.bar(region_data, x="Province", y=["T_Evacuation", "T_Health", "T_School"],
                       # title="Total Response Facilities",
-                      pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence)
+                      pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence,
+                      text_auto=True)
+    
+    fig_resp.update_layout(legend_title_text="Response Facilities")
 
     return fig_resp
 
