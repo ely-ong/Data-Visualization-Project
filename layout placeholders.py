@@ -960,7 +960,7 @@ def health_personnel_prov(selected_region, selected_province):
                              text_auto=True)
     except:
         fig_health_per_prov = px.bar(new_df,
-                             x='Health Personnel',
+                             x='Health Personnel Type',
                              y='Percentage',
                              color='Percentage',
                              color_continuous_scale = 'haline_r',
@@ -1010,7 +1010,7 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
             autosize=True,
             legend=dict(
                 orientation="h",
-                font=dict(size=10)),
+                font=dict(size=9)),
             margin={'l': 0, 't': 3, 'r': 0})
         fig_water.update_traces(
             hoverinfo='label+value',
@@ -1048,7 +1048,7 @@ def update_water_toilet_pie_graphs(selected_region, selected_province):
             autosize=True,
             legend=dict(
                 orientation="h",
-                font=dict(size=10)),
+                font=dict(size=9)),
             margin={'l': 0, 't': 3, 'r': 0})
         fig_toilet.update_traces(
             hoverinfo='label+value', marker=dict(colors=toilet_color_map))
@@ -1204,7 +1204,7 @@ def pop_per_prov(selected_region, selected_province):
 @callback(
     Output('response-per-prov', 'figure'),
     Input('region-select', 'value'),
-    Input('province-select2', 'value'),
+    Input('province-select2', 'value')
 )
 def response_per_prov(selected_region, selected_province):
     region_name = selected_region
