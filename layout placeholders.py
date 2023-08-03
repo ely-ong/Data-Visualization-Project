@@ -466,20 +466,29 @@ app.layout = html.Div(children=[
                 ])
             ], width=5),
 
-            dbc.Col(children=[
+            # dbc.Col(dbc.Placeholder(style={"height": 400,  # health personnel to population scatter
+            #                                "width": "100%"}))
+
+            dbc.Col(children=[# health personnel to population scatter
                 dbc.Stack(children=[
                     dbc.Col(children=[
                         html.H6(id="scatterplot-title"),
+
                         dcc.Graph(
                             id="scatter-plot",
                             style={"height":300,
                                     "width": "100%"})
-                      ])])
+                        ])
+                    ])
+            ])
+
+        ]),
+
         html.Br(),
         html.Br()
 
     ])
-])])])
+])
 
 # set province options and value for first dropdown
 
@@ -916,20 +925,19 @@ def update_heatmap(selected_region, selected_province):
     Input('province-select2', 'value'),
 )
 def health_per_prov(selected_region, selected_province):
-    region_name = selected_region
 
     # Filter the DataFrame by the given region
-    region_data = df_health_personnel[df_health_personnel['Region'] == region_name].copy().reset_index()
+    region_health_data = df_health_personnel[df_health_personnel['Region'] == selected_region].copy().reset_index()
 
     # Add a 'province_id' column to the filtered DataFrame
-    region_data['province_id'] = [str(i) for i in region_data.index]
+    region_health_data['province_id'] = [str(i) for i in region_health_data.index]
 
-    color_discrete_sequence = ['lightslategray',]*len(region_data)
-    index = region_data.loc[region_data['Province']
+    color_discrete_sequence = ['lightslategray',]*len(region_health_data)
+    index = region_health_data.loc[region_health_data['Province']
                             == selected_province].index[0]
     color_discrete_sequence[index] = ['crimson']  # index
 
-    fig_health_per_prov = px.bar(region_data, x='Province', y='Total Health Personnel',
+    fig_health_per_prov = px.bar(region_health_data, x='Province', y='Total Health Personnel',
                      color='province_id',
                      color_discrete_sequence=color_discrete_sequence,
                      )
@@ -1139,17 +1147,17 @@ def pop_per_prov(selected_region, selected_province):
     region_name = selected_region
 
     # Filter the DataFrame by the given region
-    region_data = pop[pop['Region'] == region_name].copy().reset_index()
+    region_pop_data = pop[pop['Region'] == region_name].copy().reset_index()
 
     # Add a 'province_id' column to the filtered DataFrame
-    region_data['province_id'] = [str(i) for i in region_data.index]
+    region_pop_data['province_id'] = [str(i) for i in region_pop_data.index]
 
-    color_discrete_sequence = ['lightslategray',]*len(region_data)
-    index = region_data.loc[region_data['Province']
+    color_discrete_sequence = ['lightslategray',]*len(region_pop_data)
+    index = region_pop_data.loc[region_pop_data['Province']
                             == selected_province].index[0]
     color_discrete_sequence[index] = ['crimson']  # index
 
-    fig_pop = px.bar(region_data, x='Province', y='Total Population',
+    fig_pop = px.bar(region_pop_data, x='Province', y='Total Population',
                      color='province_id',
                      color_discrete_sequence=color_discrete_sequence,
                      text_auto='.2s'
@@ -1194,13 +1202,12 @@ def response_per_prov(selected_region, selected_province):
 @callback(
     Output("scatter-plot", "figure"),
     Input("region-select", "value"),
-    Input("province-select1", "value"),
 )
-def scatter_plot(selected_region, selected_province):
-    health_personnel_to_pop = df_health_personnel_indexed.loc[selected_region, selected_province]
+def scatter_plot(selected_region):
+    health_personnel_to_pop = df_health_personnel_indexed.loc[selected_region]
 
     fig_health_personnel = px.scatter(health_personnel_to_pop, 
-                                    labesl=dict(x="Total Population", 
+                                    labels=dict(x="Total Population", 
                                                 y="Total Health Personnel", 
                                                 color="Region",
                                                 size='Average Risk'))
