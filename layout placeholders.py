@@ -59,6 +59,9 @@ vuln_df = pd.read_excel('data101_data/vulnerable_groups_cleaned.xlsx', sheet_nam
 
 health_faci_df = pd.read_excel('data101_data/health_facilities_cleaned.xlsx', sheet_name='consolidated')
 
+df_health_personnel = pd.read_excel('data101_data\df_health_personnel_pop.xlsx')
+df_health_personnel_indexed = df_health_personnel.set_index(['Region', 'Province'])
+
 # Mapbox token
 px.set_mapbox_access_token(open(".mapbox_token").read())
 
@@ -383,8 +386,17 @@ app.layout = html.Div(children=[
                             outline=True, color="light")
                     ]))],
             width=5),
-            dbc.Col(dbc.Placeholder(style={"height": 300,  # health personnel bar
-                                           "width": "100%"}))
+
+            dbc.Col(children=[
+                dbc.Stack(children=[
+                    dbc.Col(children=[  # health personnel per province bar 
+                        html.H6(id="health-per-prov-title"),
+                        dcc.Graph(
+                            id="health-per-prov",
+                            style={"height": 300,
+                                   "width": "100%"})]),
+                ])
+            ], width=5),
         ]),
 
         html.Br(),
@@ -454,16 +466,20 @@ app.layout = html.Div(children=[
                 ])
             ], width=5),
 
-            dbc.Col(dbc.Placeholder(style={"height": 400,  # health personnel to population scatter
-                                           "width": "100%"}))
-
-        ]),
-
+            dbc.Col(children=[
+                dbc.Stack(children=[
+                    dbc.Col(children=[
+                        html.H6(id="scatterplot-title"),
+                        dcc.Graph(
+                            id="scatter-plot",
+                            style={"height":300,
+                                    "width": "100%"})
+                      ])])
         html.Br(),
         html.Br()
 
     ])
-])
+])])])
 
 # set province options and value for first dropdown
 
@@ -894,6 +910,32 @@ def update_heatmap(selected_region, selected_province):
     return fig_shelter
 
 
+@callback( # health personnel by province 
+    Output('health-per-prov', 'figure'),
+    Input('region-select', 'value'),
+    Input('province-select2', 'value'),
+)
+def health_per_prov(selected_region, selected_province):
+    region_name = selected_region
+
+    # Filter the DataFrame by the given region
+    region_data = df_health_personnel[df_health_personnel['Region'] == region_name].copy().reset_index()
+
+    # Add a 'province_id' column to the filtered DataFrame
+    region_data['province_id'] = [str(i) for i in region_data.index]
+
+    color_discrete_sequence = ['lightslategray',]*len(region_data)
+    index = region_data.loc[region_data['Province']
+                            == selected_province].index[0]
+    color_discrete_sequence[index] = ['crimson']  # index
+
+    fig_health_per_prov = px.bar(region_data, x='Province', y='Total Health Personnel',
+                     color='province_id',
+                     color_discrete_sequence=color_discrete_sequence,
+                     )
+
+    return fig_health_per_prov
+
 @callback(
     Output("water-pie", "figure"),
     Output("toilet-pie", "figure"),
@@ -1140,6 +1182,23 @@ def response_per_prov(selected_region, selected_province):
                       pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence)
 
     return fig_resp
+
+@callback(
+    Output("scatter-plot", "figure"),
+    Input("region-select", "value"),
+    Input("province-select1", "value"),
+)
+def scatter_plot(selected_region, selected_province):
+    health_personnel_to_pop = df_health_personnel_indexed.loc[selected_region, selected_province]
+
+    fig_health_personnel = px.scatter(health_personnel_to_pop, 
+                                    labesl=dict(x="Total Population", 
+                                                y="Total Health Personnel", 
+                                                color="Region",
+                                                size='Average Risk'))
+    
+    return fig_health_personnel
+
 
 
 # Run the app
