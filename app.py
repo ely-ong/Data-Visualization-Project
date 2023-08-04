@@ -437,7 +437,7 @@ app.layout = html.Div(children=[
                 )
                     
             ],width=5),
-            
+
             dbc.Col(children=[  # water sources availability pie
                     html.H5(id="water-title"),
                     dcc.Graph(
@@ -1181,7 +1181,6 @@ def display_map(selected_type):
                                                'lon': 122.733168},
                                        height=725,
                                        zoom=4.5)
-        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     elif 'Flood' == selected_type:
         geodf = flood_gdf_indexed
@@ -1201,7 +1200,6 @@ def display_map(selected_type):
                                                'lon': 122.733168},
                                        height=725,
                                        zoom=4.5)
-        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     else:
         geodf = landslide_gdf_indexed
@@ -1221,7 +1219,10 @@ def display_map(selected_type):
                                                'lon': 122.733168},
                                        height=725,
                                        zoom=4.5)
-        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        
+    map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
+                          coloraxis_colorbar_title_text = "Average Risk"
+                        )
 
     return map_fig
 
@@ -1291,8 +1292,11 @@ def response_per_prov(selected_region, selected_province):
                       pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence,
                       text_auto=True)
     
-    fig_resp.update_layout(legend_title_text="Response Facilities",
-                           margin={"r": 0, "t": 3, "l": 0, "b": 0})
+    fig_resp.update_layout(
+                        legend=dict(
+                            title="Response Facilities"
+                        ),
+                        margin={"r": 0, "t": 3, "l": 0, "b": 0})
 
     return fig_resp
 
