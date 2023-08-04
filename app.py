@@ -502,7 +502,7 @@ app.layout = html.Div(children=[
                             dcc.Graph(
                                 id="response-per-prov",
                                 style={"height": 500,
-                                    "width": 500})
+                                    "width": 700})
                             ]
                         )
                     ])
