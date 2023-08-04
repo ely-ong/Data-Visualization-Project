@@ -79,7 +79,7 @@ navbar = dbc.NavbarSimple(
     ],
     brand="DATA101 Final Project - Group 4",
     brand_href="#",
-    color="primary",
+    color="#023e7d",
     dark=True,
     sticky="top"
 )
@@ -1287,14 +1287,21 @@ def response_per_prov(selected_region, selected_province):
                             == selected_province].index[0]
     pattern_shape_sequence[index] = ['x', 'x', 'x']  # index
 
-    fig_resp = px.bar(region_data, x="Province", y=["T_Evacuation", "T_Health", "T_School"],
+    colors={
+        'Evacuation Centers':'#66c2a5',
+        'Health Facilities':'#fc8d62',
+        'Schools':'#8da0cb'
+    }
+
+    fig_resp = px.bar(region_data, x="Province", y=["Evacuation Centers", "Health Facilities", "Schools"],
                       # title="Total Response Facilities",
-                      pattern_shape="province_id", pattern_shape_sequence=pattern_shape_sequence,
-                      text_auto=True)
+                      pattern_shape="Province", pattern_shape_sequence=pattern_shape_sequence,
+                      text_auto=True,
+                      color_discrete_map=colors)
     
     fig_resp.update_layout(
                         legend=dict(
-                            title="Response Facilities"
+                            title="Response Facilities and Province"
                         ),
                         margin={"r": 0, "t": 3, "l": 0, "b": 0})
 
