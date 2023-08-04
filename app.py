@@ -773,49 +773,67 @@ def set_school_values(selected_province):
     Input("province-select1", "value")
 )
 def set_brgy_health_station_values(selected_province):
-    brgy_health_station = health_faci_df.query(f"province=='{selected_province}'")["brgy_health_station"]
-    return "{:,}".format(brgy_health_station.iloc[0])
+    try:
+        brgy_health_station = health_faci_df.query(f"province=='{selected_province}'")["brgy_health_station"]
+        return "{:,}".format(brgy_health_station.iloc[0])
+    
+    except:
+        return "0"
 
 @callback(
     Output("hospital-values", "children"),
     Input("province-select1", "value")
 )
 def set_hospital_values(selected_province):
-    hosp =  health_faci_df.query(f"province=='{selected_province}'")["hospital"]
-    return "{:,}".format(hosp.iloc[0]) 
+    try:
+        hosp =  health_faci_df.query(f"province=='{selected_province}'")["hospital"]
+        return "{:,}".format(hosp.iloc[0]) 
+    except:
+        return "0"
 
 @callback(
     Output("gen-clinic-laboratory-values", "children"),
     Input("province-select1", "value")
 )
 def set_gen_clinic_laboratory_values(selected_province):
-    gen_clinic = health_faci_df.query(f"province=='{selected_province}'")["gen_clinic_laboratory"]
-    return "{:,}".format(gen_clinic.iloc[0]) 
+    try:
+        gen_clinic = health_faci_df.query(f"province=='{selected_province}'")["gen_clinic_laboratory"]
+        return "{:,}".format(gen_clinic.iloc[0]) 
+    except:
+        return "0"
 
 @callback(
     Output("rural-health-unit-values", "children"),
     Input("province-select1", "value")
 )
 def set_rural_health_unit_values(selected_province):
-    rural_unit = health_faci_df.query(f"province=='{selected_province}'")["rural_health_unit"]
-    return "{:,}".format(rural_unit.iloc[0]) 
+    try:
+        rural_unit = health_faci_df.query(f"province=='{selected_province}'")["rural_health_unit"]
+        return "{:,}".format(rural_unit.iloc[0]) 
+    except:
+        return "0"
 
 @callback(
     Output("infirmary-values", "children"),
     Input("province-select1", "value")
 )
 def set_infirmary_values(selected_province):
-    infirmary =  health_faci_df.query(f"province=='{selected_province}'")["infirmary"]
-    return "{:,}".format(infirmary.iloc[0]) 
+    try:
+        infirmary =  health_faci_df.query(f"province=='{selected_province}'")["infirmary"]
+        return "{:,}".format(infirmary.iloc[0]) 
+    except:
+        return "0"
 
 @callback(
     Output("birth-homes-values", "children"),
     Input("province-select1", "value")
 )
 def set_birthing_homes_values(selected_province):
-    birth_home = health_faci_df.query(f"province=='{selected_province}'")["birthing_homes"]
-    return "{:,}".format(birth_home.iloc[0]) 
-
+    try:
+        birth_home = health_faci_df.query(f"province=='{selected_province}'")["birthing_homes"]
+        return "{:,}".format(birth_home.iloc[0]) 
+    except:
+        return "0"
 
 @callback(
     Output("elem-title", "children"),
@@ -1252,6 +1270,7 @@ def pop_per_prov(selected_region, selected_province):
                      color_discrete_sequence=color_discrete_sequence,
                      text_auto='.2s'
                      )
+    
     except:
         fig_pop = px.bar(region_pop_data, x='Province', y='Total Population',
                      color='province_id',
