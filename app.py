@@ -73,6 +73,17 @@ px.set_mapbox_access_token(open(".mapbox_token").read())
 app = Dash(__name__,
            external_stylesheets=[dbc.themes.BOOTSTRAP])  # theme could be changed https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/
 
+navbar = dbc.NavbarSimple(
+    children=[
+        dbc.NavItem(dbc.NavLink("Back to Top", href="#")),
+    ],
+    brand="DATA101 Final Project - Group 4",
+    brand_href="#",
+    color="primary",
+    dark=True,
+    sticky="top"
+)
+
 region_options = []
 for i in regions:
     region_options.append({
@@ -81,6 +92,7 @@ for i in regions:
     })
 
 app.layout = html.Div(children=[
+    navbar,
     dbc.Container([
         html.Br(),
         # static, but we could change via call back to "Risk Information in {Region}, put id if ever"
@@ -393,12 +405,17 @@ app.layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Stack(children=[
                     dbc.Col(children=[  # health personnel per province bar 
-                        html.H5(id="health-per-prov-title",
-                                style={"width": 800}),
-                        dcc.Graph(
-                            id="health-per-prov",
-                            style={"height": 500,
-                                   "width": 800})]),
+                        dcc.Loading(id="bar-loading",
+                                    type="circle",
+                                    children=[
+                                        html.H5(id="health-per-prov-title",
+                                                style={"width": 800}),
+                                        dcc.Graph(
+                                            id="health-per-prov",
+                                            style={"height": 500,
+                                                "width": 800})
+                                    ])
+                        ]),
                 ])
             ], width=5),
         ]),
@@ -407,12 +424,20 @@ app.layout = html.Div(children=[
 
         dbc.Row(children=[
             dbc.Col(children=[  # wall-roof heatmap
-                    html.H5(id="heatmap-title"),
-                    dcc.Graph(
-                        id="heatmap",
-                        style={"height": 500,
-                               "width": "100%"})],
-                    width=5),
+                dcc.Loading(
+                    id='heatmap-loading',
+                    type='circle',
+                    children=[
+                        html.H5(id="heatmap-title"),
+                        dcc.Graph(
+                            id="heatmap",
+                            style={"height": 500,
+                                "width": "100%"})
+                    ]
+                )
+                    
+            ],width=5),
+            
             dbc.Col(children=[  # water sources availability pie
                     html.H5(id="water-title"),
                     dcc.Graph(
@@ -454,18 +479,32 @@ app.layout = html.Div(children=[
         dbc.Col(children=[
             dbc.Row(children=[
                 # dbc.Stack(children=[
+            
                     dbc.Col(children=[  # pop per province bar
-                        html.H5(id="pop-per-prov-title"),
-                        dcc.Graph(
-                            id="pop-per-prov",
-                            style={"height": 500,
-                                   "width": 500})]),
+                        dcc.Loading(
+                            id='pop-bar-loading',
+                            type='circle',
+                            children=[
+                                 html.H5(id="pop-per-prov-title"),
+                                dcc.Graph(
+                                    id="pop-per-prov",
+                                    style={"height": 500,
+                                        "width": 500})
+                            ]
+                        )
+                    ]),
                     dbc.Col(children=[  # response facilities per province bar
-                        html.H5(id="response-per-prov-title"),
-                        dcc.Graph(
-                            id="response-per-prov",
-                            style={"height": 500,
-                                   "width": 500})
+                        dcc.Loading(
+                            id='stacked-bar-loading',
+                            type='circle',
+                            children=[
+                                html.H5(id="response-per-prov-title"),
+                            dcc.Graph(
+                                id="response-per-prov",
+                                style={"height": 500,
+                                    "width": 500})
+                            ]
+                        )
                     ])
                 # ])
             ], ),
