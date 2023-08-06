@@ -160,7 +160,8 @@ app.layout = html.Div(children=[
                                                      title="Disabled Males"),
                                          dbc.CardBody(children=[
                                              html.H6(id='disabled_male',
-                                                     style={'text-align': 'center'}
+                                                     style={'text-align': 'center',
+                                                            'font-size': '20px',}
                                                      ),
                                              html.H6("Disabled Males", 
                                                      style={'font-size': '12px',
@@ -172,7 +173,8 @@ app.layout = html.Div(children=[
                                                      title="Elderly Males"),
                                          dbc.CardBody(children=[
                                              html.H6(id='older_male',
-                                                     style={'text-align': 'center'}),
+                                                     style={'text-align': 'center',
+                                                            'font-size': '20px'}),
                                                      
                                              html.H6("Elderly Males", 
                                                     style={'font-size': '12px',
@@ -184,12 +186,13 @@ app.layout = html.Div(children=[
                                                      title="Male Child-headed Families"),
                                          dbc.CardBody(children=[
                                              html.H6(id='child_headed_male', 
-                                                     style={'text-align': 'center'}
+                                                     style={'text-align': 'center',
+                                                            'font-size': '20px'}
                                                      ),
                                                      
                                              html.H6("Male Child-headed Families", 
                                                     style={'font-size': '12px',
-                                                           'text-align': 'center'})])],
+                                                           'text-align': 'center',})])],
                                         outline=True, color="light"),
                                     dbc.Card(
                                         [dbc.CardImg(src="/static/images/solo_parent_male.png", 
@@ -197,7 +200,8 @@ app.layout = html.Div(children=[
                                                      title="Male Single Parents"),
                                          dbc.CardBody(children=[
                                              html.H6(id='solo_parent_male',
-                                                     style={'text-align': 'center'}
+                                                     style={'text-align': 'center',
+                                                            'font-size': '20px'}
                                                      ),
                                                      
                                              html.H6("Male Single Parents", 
@@ -214,7 +218,8 @@ app.layout = html.Div(children=[
                                                      title="Disabled Females"),
                                          dbc.CardBody(children=[
                                              html.H6(id='disabled_female', 
-                                                     style={'text-align': 'center'}
+                                                     style={'text-align': 'center',
+                                                            'font-size': '20px'}
                                                      ),
                                                      
                                              html.H6("Disabled Females", 
@@ -227,7 +232,8 @@ app.layout = html.Div(children=[
                                                      title="Elderly Females"),
                                          dbc.CardBody(children=[
                                              html.H6(id='older_female',
-                                                     style={'text-align': 'center'}
+                                                     style={'text-align': 'center',
+                                                            'font-size': '20px'}
                                                      ),
                                                      
                                              html.H6("Elderly Females", 
@@ -240,7 +246,8 @@ app.layout = html.Div(children=[
                                                      title="Female Child-headed Families"),
                                          dbc.CardBody(children=[
                                              html.H6(id='child_headed_female',
-                                                     style={'text-align': 'center'}
+                                                     style={'text-align': 'center',
+                                                            'font-size': '20px'}
                                                      ),
                                                      
                                              html.H6("Female Child-headed Families", 
@@ -253,7 +260,8 @@ app.layout = html.Div(children=[
                                                      title="Female Single Parents"),
                                          dbc.CardBody(children=[
                                              html.H6(id='solo_parent_female',
-                                                     style={'text-align': 'center'}
+                                                     style={'text-align': 'center',
+                                                            'font-size': '20px'}
                                                      ),
                                                      
                                              html.H6("Female Single Parents", 
@@ -991,7 +999,7 @@ def update_heatmap(selected_region, selected_province):
 
     fig_shelter = px.imshow(df_shelters,
                             text_auto=True,
-                            color_continuous_scale='turbid',
+                            color_continuous_scale='brwnyl',
                             labels=dict(x='Roof Category',
                                         y='Wall Category',
                                         color='Percentage'))
