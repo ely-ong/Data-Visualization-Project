@@ -153,7 +153,7 @@ app.layout = html.Div(children=[
                                        "width": "100%"})]),
                         dbc.Col(children=[ 
                             html.Br(),
-                            html.H6(children="Number of Vulnerable Group Members by Type"),
+                            html.H6(children="Number of People per Vulnerable Group"),
                             dbc.Row( # vulnerable groups single values
                                 dbc.CardGroup([
                                     dbc.Card(
