@@ -145,6 +145,7 @@ app.layout = html.Div(children=[
 
                     dbc.Row(children=[
                         dbc.Col(children=[  # bidirectional population and age
+                            html.Br(),
                             html.H6(id="pop-bidirectional-title"),
                             dcc.Graph(
                                 id="pop-bidirectional",
@@ -152,6 +153,7 @@ app.layout = html.Div(children=[
                                        "width": "100%"})]),
                         dbc.Col(children=[ 
                             html.Br(),
+                            html.H6(children="Number of Vulnerable Group Members by Type"),
                             dbc.Row( # vulnerable groups single values
                                 dbc.CardGroup([
                                     dbc.Card(
@@ -339,6 +341,7 @@ app.layout = html.Div(children=[
 
         dbc.Row(children=[ #health facilities available
             dbc.Col(children=[
+                html.H5(children="Number of Health Facilities by Type"),
                 dbc.Row(
                     dbc.CardGroup([
                         dbc.Card(
