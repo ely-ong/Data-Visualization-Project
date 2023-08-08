@@ -77,7 +77,7 @@ navbar = dbc.NavbarSimple(
     children=[
         dbc.NavItem(dbc.NavLink("Back to Top", href="#")),
     ],
-    brand="DATA101 Final Project - Group 4",
+    brand="Flood, Landslide, and Typhoon Disaster Risk in the Philippines",
     brand_href="#",
     color="#023e7d",
     dark=True,
