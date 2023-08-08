@@ -161,7 +161,7 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='disabled_male',
                                                      style={'text-align': 'center',
-                                                            'font-size': '24px',}
+                                                            'font-size': '18px',}
                                                      ),
                                              html.H6("Disabled Males", 
                                                      style={'font-size': '12px',
@@ -174,7 +174,7 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='older_male',
                                                      style={'text-align': 'center',
-                                                            'font-size': '24px'}),
+                                                            'font-size': '18px'}),
                                                      
                                              html.H6("Elderly Males", 
                                                     style={'font-size': '12px',
@@ -187,7 +187,7 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='child_headed_male', 
                                                      style={'text-align': 'center',
-                                                            'font-size': '24px'}
+                                                            'font-size': '18px'}
                                                      ),
                                                      
                                              html.H6("Male Child-headed Families", 
@@ -201,7 +201,7 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='solo_parent_male',
                                                      style={'text-align': 'center',
-                                                            'font-size': '24px'}
+                                                            'font-size': '18px'}
                                                      ),
                                                      
                                              html.H6("Male Single Parents", 
@@ -219,7 +219,7 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='disabled_female', 
                                                      style={'text-align': 'center',
-                                                            'font-size': '20px'}
+                                                            'font-size': '18px'}
                                                      ),
                                                      
                                              html.H6("Disabled Females", 
@@ -233,7 +233,7 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='older_female',
                                                      style={'text-align': 'center',
-                                                            'font-size': '24px'}
+                                                            'font-size': '18px'}
                                                      ),
                                                      
                                              html.H6("Elderly Females", 
@@ -247,7 +247,7 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='child_headed_female',
                                                      style={'text-align': 'center',
-                                                            'font-size': '24px'}
+                                                            'font-size': '18px'}
                                                      ),
                                                      
                                              html.H6("Female Child-headed Families", 
@@ -261,7 +261,7 @@ app.layout = html.Div(children=[
                                          dbc.CardBody(children=[
                                              html.H6(id='solo_parent_female',
                                                      style={'text-align': 'center',
-                                                            'font-size': '24px'}
+                                                            'font-size': '18px'}
                                                      ),
                                                      
                                              html.H6("Female Single Parents", 
@@ -458,8 +458,8 @@ app.layout = html.Div(children=[
                                                 'display': 'block',
                                                 'margin-left': 'auto',
                                                 'margin-right': 'auto',
-                                                'margin-top':'30px'
-                                                # 'margin-bottom':'-20px',
+                                                'margin-top':'30px',
+                                                'margin-bottom':'-20px'
                                                 }),
                              dbc.CardBody(children=[
                                  html.H1(id='birth-homes-values',
