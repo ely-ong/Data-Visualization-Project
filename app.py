@@ -153,7 +153,7 @@ app.layout = html.Div(children=[
                                        "width": "100%"})]),
                         dbc.Col(children=[ 
                             html.Br(),
-                            html.H6(children="Number of People per Vulnerable Group"),
+                            html.H6(id="vulnerable-title"),
                             dbc.Row( # vulnerable groups single values
                                 dbc.CardGroup([
                                     dbc.Card(
@@ -289,7 +289,7 @@ app.layout = html.Div(children=[
                                                 # 'margin-bottom':'-8px',
                                                 }),
                              dbc.CardBody(children=[
-                                html.H1(id='evac-center-values', 
+                                html.H2(id='evac-center-values', 
                                         style={'text-align': 'center'}),
                                 html.H5("Evacuation Centers", 
                                         style={'text-align': 'center'})
@@ -311,7 +311,7 @@ app.layout = html.Div(children=[
                                                 # 'margin-bottom':'-8px',
                                                 }),
                              dbc.CardBody(children=[
-                                html.H1(id='school-values',
+                                html.H2(id='school-values',
                                         style={'text-align': 'center'}),
                                 html.H5("Schools",
                                         style={'text-align': 'center'})
@@ -341,7 +341,7 @@ app.layout = html.Div(children=[
 
         dbc.Row(children=[ #health facilities available
             dbc.Col(children=[
-                html.H5(children="Number of Health Facilities by Type"),
+                html.H5(id="health-faci-title"),
                 dbc.Row(
                     dbc.CardGroup([
                         dbc.Card(
@@ -530,7 +530,7 @@ app.layout = html.Div(children=[
         html.Br(),
 
         dbc.Row(
-            html.H1(children="Philippine Risk Information per Region")),  # static, but we could change via call back to "Risk Information in {Region}, put id if ever"
+            html.H1(children="Philippine Risk Information per Region")), 
 
         html.Br(),
 
@@ -702,6 +702,10 @@ def update_pop_bidirectional(selected_province):
 
     grpby_ph = df_pop_by_gender_age[df_pop_by_gender_age['Province'] == selected_province].groupby(
         by='Age_Group', as_index=False, sort=False).sum()
+    
+    if grpby_ph.empty:
+        return fig_none
+
     grpby_ph = sort_by_age_grp(grpby_ph)
 
     df = grpby_ph
@@ -758,6 +762,12 @@ def update_pop_bidirectional(selected_province):
     return fig_bidirectional_pop
 
 # SINGLE VALUES VULNERABLE GROUPS CALLBACKS
+@callback(
+    Output("vulnerable-title", "children"),
+    Input("province-select1", "value")
+)
+def set_vulnerable_title(selected_province):
+    return "Number of People per Vulnerable Group in "+selected_province
 
 @callback(
     Output("disabled_male", "children"),
@@ -842,6 +852,13 @@ def set_school_values(selected_province):
     return "{:,}".format(school_value.iloc[0]) 
 
 # SINGLE VALUES HEALTH FACILITIES CALLBACKS
+@callback(
+    Output("health-faci-title", "children"),
+    Input("province-select1", "value")
+)
+def set_health_faci_title(selected_province):
+    return "Number of Health Facilities by Type in "+selected_province
+
 @callback(
     Output("brgy-health-station-values", "children"),
     Input("province-select1", "value")
@@ -1467,6 +1484,7 @@ def scatter_plot(selected_region1, selected_region2):
     fig_scatter.update_layout(
                         xaxis_title='Population',
                         yaxis_title='Number of Health Personnel',
+                        plot_bgcolor='white',
                         legend=dict(
                             orientation="h",
                             xanchor='center',
@@ -1476,6 +1494,12 @@ def scatter_plot(selected_region1, selected_region2):
                         margin={'b': 0, 'l': 0, 't': 3, 'r': 0}
                         )
 
+    fig_scatter.update_xaxes(
+                        gridcolor='lightgrey'
+                        )
+    fig_scatter.update_yaxes(
+                        gridcolor='lightgrey'
+                        )
     
     return fig_scatter
 
