@@ -59,7 +59,7 @@ vuln_df = pd.read_excel('data101_data/vulnerable_groups_cleaned.xlsx', sheet_nam
 
 health_faci_df = pd.read_excel('data101_data/health_facilities_cleaned.xlsx', sheet_name='consolidated')
 
-df_health_personnel = pd.read_excel('data101_data\health_personnel_cleaned.xlsx')
+df_health_personnel = pd.read_excel('data101_data/health_personnel_cleaned.xlsx')
 df_health_personnel_indexed = df_health_personnel.set_index(['Region', 'Province'])
 
 df_scatter = pd.read_excel('data101_data/for_scatterplot.xlsx')
