@@ -12,6 +12,10 @@ This dashboard application is therefore created to help local government units, 
 - Ong, Elyssia Barrie H.
 
 ## Setup Instructions
+- Install the required packages:
+```
+pip install -r requirements.txt
+```
 - Run the following command:
 ```
 python app.py
