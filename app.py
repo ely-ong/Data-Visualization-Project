@@ -70,8 +70,7 @@ px.set_mapbox_access_token(open(".mapbox_token").read())
 
 
 # Initialize Dash application
-app = Dash(__name__,
-           external_stylesheets=[dbc.themes.BOOTSTRAP])  # theme could be changed https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])  # theme could be changed https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/
 
 server = app.server
 
