@@ -73,6 +73,8 @@ px.set_mapbox_access_token(open(".mapbox_token").read())
 app = Dash(__name__,
            external_stylesheets=[dbc.themes.BOOTSTRAP])  # theme could be changed https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/
 
+server = app.server
+
 navbar = dbc.NavbarSimple(
     children=[
         dbc.NavItem(dbc.NavLink("Back to Top", href="#")),
