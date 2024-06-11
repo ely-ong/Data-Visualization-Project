@@ -1,10 +1,14 @@
 # Flood, Landslide, and Typhoon Disaster Risk in the Philippines
+![badge-python](https://img.shields.io/badge/Python-3670A0?style=flat&logo=python&logoColor=white)
+![badge-jupyter-nbk](https://img.shields.io/badge/Jupyter-%23FA0F00.svg?style=flat&logo=jupyter&logoColor=white)
+![badge-plotly](https://img.shields.io/badge/Plotly-%233F4F75.svg?style=flat&logo=plotly&logoColor=white)
+![badge-bootstrap](https://img.shields.io/badge/Bootstrap-%238511FA.svg?style=flat&logo=bootstrap&logoColor=white)
 
-## Description
 The Philippines is highly prone to natural disasters, particularly typhoons due to its location in the Northwestern Pacific Basin, as well as frequent landslides and floods primarily caused by the increasing intensity of said typhoons.
+
 This dashboard application is created to help local government units, disaster relief NGOs, and the general public in visualizing flood, landslide, and typhoon risks as well as pre-disaster risk indicators to improve decision-making, preparations, and public safety in the country.
 
-## Group 4 Project Team
+## Project Team
 - Caballa, John Allen C.
 - Fundales, Julianne S.
 - Gammad, Alyanna Marrielle C.
@@ -12,9 +16,9 @@ This dashboard application is created to help local government units, disaster r
 - Ong, Elyssia Barrie H.
 
 ## Setup Instructions
-- Install the required packages:
+- Clone this repository:
 ```
-pip install -r requirements.txt
+git clone https://github.com/ely-ong/Data-Visualization-Project.git
 ```
 - Run the following command:
 ```
