@@ -17,12 +17,12 @@ This dashboard application is created to help local government units, disaster r
 
 ## Setup Instructions
 1. Clone this repository:
-```
-git clone https://github.com/ely-ong/Data-Visualization-Project.git
-```
+    ```
+    git clone https://github.com/ely-ong/Data-Visualization-Project.git
+    ```
 1. Run the following command:
-```
-python app.py
-```
+    ```
+    python app.py
+    ```
 1. Open the dashboard application on a browser using the local address http://127.0.0.1:8050/, or the address displayed in the command prompt.
 
