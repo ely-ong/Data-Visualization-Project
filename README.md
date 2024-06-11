@@ -22,6 +22,7 @@ This dashboard application is created to help local government units, disaster r
     ```
 1. Run the following command:
     ```
+    cd Data-Visualization-Project
     python app.py
     ```
 1. Open the dashboard application on a browser using the local address http://127.0.0.1:8050/, or the address displayed in the command prompt.
