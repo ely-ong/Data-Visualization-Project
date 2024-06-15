@@ -20,10 +20,14 @@ This dashboard application is created to help local government units, disaster r
     ```
     git clone https://github.com/ely-ong/Data-Visualization-Project.git
     ```
-1. Run the following command:
+1. Open a terminal window or command prompt and install the required dependencies:
     ```
     cd Data-Visualization-Project
-    python app.py
+    pip install -r requirements.txt
     ```
+1. Run the application with the following command:
+   ```
+   python app.py
+   ```
 1. Open the dashboard application on a browser using the local address http://127.0.0.1:8050/, or the address displayed in the command prompt.
 
