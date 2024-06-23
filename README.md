@@ -8,6 +8,8 @@ The Philippines is highly prone to natural disasters, particularly typhoons due 
 
 This dashboard application is created to help local government units, disaster relief NGOs, and the general public in visualizing flood, landslide, and typhoon risks as well as pre-disaster risk indicators to improve decision-making, preparations, and public safety in the country.
 
+<img src="https://github.com/ely-ong/Data-Visualization-Project/blob/main/static/images/main.png" width="80%" height="80%">
+
 ## Setup Instructions
 1. Clone this repository:
     ```
