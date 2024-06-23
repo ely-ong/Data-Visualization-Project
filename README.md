@@ -11,9 +11,9 @@ This dashboard application is created to help local government units, disaster r
 For reference, the data used to create the dashboard were retrieved from the following sources:
 - [Pre-disaster Indicators in the Philippines](https://data.humdata.org/dataset/philippines-pre-disaster-indicators) by the United Nations Office for the Coordination of Humanitarian Affairs (OCHA)
 - [Philippine 2020 Census on Population and Housing](https://psa.gov.ph/content/age-and-sex-distribution-philippine-population-2020-census-population-and-housing) by the Philippine Statistics Authority (PSA)
+- [Typhoon above Category 3 Risk in the Philippines](https://data.humdata.org/dataset/wfp-geonode-ica-philippines-tropical-storm-above-category-3-occurrence) by Humanitarian Data Exchange
 - [Flood Risk in the Philippines](https://data.humdata.org/dataset/wfp-geonode-ica-philippines-flood-risk) by Humanitarian Data Exchange
 - [Landslide Risk in the Philippines](https://data.humdata.org/dataset/wfp-geonode-ica-philippines-average-landslide-risk) by Humanitarian Data Exchange
-- [Typhoon above Category 3 Risk in the Philippines](https://data.humdata.org/dataset/wfp-geonode-ica-philippines-tropical-storm-above-category-3-occurrence) by Humanitarian Data Exchange
 
 
 <img src="https://github.com/ely-ong/Data-Visualization-Project/blob/main/static/images/main.png" width="80%" height="80%">
