@@ -38,16 +38,16 @@ average_gdf = gpd.read_file(
     'data101_data/final_aggregate.geojson', driver='GeoJSON')
 average_gdf_indexed = average_gdf.set_index('adm2_name')
 
-cyclone_gdf = gpd.read_file(
-    'data101_data/final_cyclone.geojson', driver='GeoJSON')
-cyclone_gdf_indexed = cyclone_gdf.set_index('adm2_name')
+# cyclone_gdf = gpd.read_file(
+#     'data101_data/final_cyclone.geojson', driver='GeoJSON')
+# cyclone_gdf_indexed = cyclone_gdf.set_index('adm2_name')
 
-flood_gdf = gpd.read_file('data101_data/final_flood.geojson', driver='GeoJSON')
-flood_gdf_indexed = flood_gdf.set_index('adm2_name')
+# flood_gdf = gpd.read_file('data101_data/final_flood.geojson', driver='GeoJSON')
+# flood_gdf_indexed = flood_gdf.set_index('adm2_name')
 
-landslide_gdf = gpd.read_file(
-    'data101_data/final_landslide.geojson', driver='GeoJSON')
-landslide_gdf_indexed = landslide_gdf.set_index('adm2_name')
+# landslide_gdf = gpd.read_file(
+#     'data101_data/final_landslide.geojson', driver='GeoJSON')
+# landslide_gdf_indexed = landslide_gdf.set_index('adm2_name')
 
 pop = pd.read_excel('data101_data/pop_per_reg.xlsx')
 
@@ -1274,6 +1274,9 @@ def display_map(selected_type):
         map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     elif 'Typhoon' == selected_type:
+        cyclone_gdf = gpd.read_file('data101_data/final_cyclone.geojson', driver='GeoJSON')
+        cyclone_gdf_indexed = cyclone_gdf.set_index('adm2_name')
+
         geodf = cyclone_gdf_indexed
 
         map_fig = px.choropleth_mapbox(geodf,
@@ -1293,6 +1296,9 @@ def display_map(selected_type):
                                        zoom=4.5)
 
     elif 'Flood' == selected_type:
+        flood_gdf = gpd.read_file('data101_data/final_flood.geojson', driver='GeoJSON')
+        flood_gdf_indexed = flood_gdf.set_index('adm2_name')
+
         geodf = flood_gdf_indexed
 
         map_fig = px.choropleth_mapbox(geodf,
@@ -1312,6 +1318,9 @@ def display_map(selected_type):
                                        zoom=4.5)
 
     else:
+        landslide_gdf = gpd.read_file('data101_data/final_landslide.geojson', driver='GeoJSON')
+        landslide_gdf_indexed = landslide_gdf.set_index('adm2_name')
+        
         geodf = landslide_gdf_indexed
 
         map_fig = px.choropleth_mapbox(geodf,
